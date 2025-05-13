@@ -27,10 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret_key') # Default value if not defined
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.getenv('DEBUG', 'False') == 'False' # Convert the string to boolean
+DEBUG = os.getenv('DEBUG', 'False') == 'False' # Convert the string to boolean
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
 
 # Application definition
 
@@ -140,6 +139,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / "insurance_app" / "static",
 ]
+
+STATIC_ROOT = BASE_DIR / "insurance_app" / "staticfiles"
 
 AUTH_USER_MODEL = 'insurance_app.UserProfile'
 

@@ -86,8 +86,8 @@
                 // Fade in the new image
                 imageElement.style.opacity = 1;
                 blurElement.style.opacity = 1;
-            }, 2000);
-        }, 10000);
+            }, 500);
+        }, 5000);
     </script>
     <style>
 
@@ -113,7 +113,7 @@
             transform: scale(1.1); /* Scale to prevent edge gaps */
             z-index: -1; /* Behind other content */
             opacity: 1;
-            transition: opacity 2s ease-in-out;
+            transition: opacity 1s ease-in-out;
         }
 
         /* Main image */
@@ -128,7 +128,7 @@
             background-repeat: no-repeat;
             z-index: 1;
             opacity: 1;
-            transition: opacity 2s ease-in-out;
+            transition: opacity 1s ease-in-out;
         }
     </style>
 
