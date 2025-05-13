@@ -1,8 +1,14 @@
 from django.test import TestCase
 from django.contrib.admin.sites import site
 from insurance_app.models import Job, ContactMessage, Availability, Appointment
-from insurance_app.admin import JobAdmin, ContactMessageAdmin, AvailabilityAdmin, AppointmentAdmin
+from insurance_app.admin import (
+    JobAdmin,
+    ContactMessageAdmin,
+    AvailabilityAdmin,
+    AppointmentAdmin,
+)
 from insurance_app.admin import AvailabilityAdminForm
+
 
 class AdminSiteTest(TestCase):
     def test_job_admin_registered(self):
@@ -27,7 +33,9 @@ class AdminSiteTest(TestCase):
 
     def test_display_times_method(self):
         # Test the display_times method in AvailabilityAdmin
-        availability = Availability.objects.create(date="2025-05-13", time_slots=["09:00", "10:00"])
+        availability = Availability.objects.create(
+            date="2025-05-13", time_slots=["09:00", "10:00"]
+        )
         admin_instance = AvailabilityAdmin(Availability, site)
         self.assertEqual(admin_instance.display_times(availability), "09:00, 10:00")
 
@@ -39,8 +47,12 @@ class AdminSiteTest(TestCase):
         if db_field.get_internal_type() == "CharField":
             # Test for CharField with choices
             form_field = admin_instance.formfield_for_choice_field(db_field, None)
-            expected_choices = [(f"{hour:02}:00", f"{hour:02}:00") for hour in range(9, 19)]
-            actual_choices = [c for c in form_field.choices if c[0]]  # Exclude blank choices
+            expected_choices = [
+                (f"{hour:02}:00", f"{hour:02}:00") for hour in range(9, 19)
+            ]
+            actual_choices = [
+                c for c in form_field.choices if c[0]
+            ]  # Exclude blank choices
             self.assertEqual(actual_choices, expected_choices)
         else:
             # Ensure no error is raised for non-CharField
@@ -61,10 +73,9 @@ class TestAvailabilityAdminFormCleanTimeSlots(TestCase):
 
     def test_clean_time_slots_happy_path_multiple(self):
         # Arrange
-        form = AvailabilityAdminForm(data={
-            "date": "2025-05-13",
-            "time_slots": ["09:00", "10:00", "11:00"]
-        })
+        form = AvailabilityAdminForm(
+            data={"date": "2025-05-13", "time_slots": ["09:00", "10:00", "11:00"]}
+        )
         self.assertTrue(form.is_valid())
 
         # Act
@@ -78,10 +89,9 @@ class TestAvailabilityAdminFormCleanTimeSlots(TestCase):
 
     def test_clean_time_slots_happy_path_single(self):
         # Arrange
-        form = AvailabilityAdminForm(data={
-            "date": "2025-05-13",
-            "time_slots": ["15:00"]
-        })
+        form = AvailabilityAdminForm(
+            data={"date": "2025-05-13", "time_slots": ["15:00"]}
+        )
         self.assertTrue(form.is_valid())
 
         # Act
@@ -102,10 +112,7 @@ class TestAvailabilityAdminFormCleanTimeSlots(TestCase):
     def test_clean_time_slots_edge_case_none_value(self):
         # Arrange
         # Simulate a form with cleaned_data['time_slots'] = None
-        form = AvailabilityAdminForm(data={
-            "date": "2025-05-13",
-            "time_slots": None
-        })
+        form = AvailabilityAdminForm(data={"date": "2025-05-13", "time_slots": None})
         # Bypass is_valid to directly set cleaned_data
         form.cleaned_data = {"time_slots": None}
 

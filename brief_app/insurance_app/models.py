@@ -6,11 +6,11 @@ from datetime import date
 
 class UserProfile(AbstractUser):
     """
-    Extends the default Django user model to include additional personal 
+    Extends the default Django user model to include additional personal
     information for users, including physical attributes and lifestyle choices.
 
-    This model includes fields for the user's age, weight, height, number of 
-    children, smoking status, region, and sex. It also provides a BMI calculation 
+    This model includes fields for the user's age, weight, height, number of
+    children, smoking status, region, and sex. It also provides a BMI calculation
     based on the user's weight and height, with safety checks for division by zero.
 
     Attributes:
@@ -24,13 +24,13 @@ class UserProfile(AbstractUser):
 
     Methods:
         bmi (property):
-            Calculates the user's BMI based on weight and height. 
+            Calculates the user's BMI based on weight and height.
             If the height is zero or negative, it returns 0.0 to avoid division by zero errors.
 
         __str__():
             Returns a string representation of the user profile, using the username field.
             Example: 'johndoe'
-    
+
     Nested Enum-like Classes:
         SmokerType (TextChoices): Defines the choices for the smoker field ('Yes' or 'No').
         RegionType (TextChoices): Defines the choices for the region field ('Northeast', 'Northwest', 'Southeast', 'Southwest').
@@ -50,20 +50,20 @@ class UserProfile(AbstractUser):
     Returns:
         str: The string representation of the user profile (username).
     """
-    
+
     class SmokerType(models.TextChoices):
-        YES = 'Yes', 'Yes'
-        NO = 'No', 'No'
+        YES = "Yes", "Yes"
+        NO = "No", "No"
 
     class RegionType(models.TextChoices):
-        NORTHEAST = 'Northeast', 'Northeast'
-        NORTHWEST = 'Northwest', 'Northwest'
-        SOUTHEAST = 'Southeast', 'Southeast'
-        SOUTHWEST = 'Southwest', 'Southwest'
+        NORTHEAST = "Northeast", "Northeast"
+        NORTHWEST = "Northwest", "Northwest"
+        SOUTHEAST = "Southeast", "Southeast"
+        SOUTHWEST = "Southwest", "Southwest"
 
     class SexType(models.TextChoices):
-        MALE = 'Male', 'Male'
-        FEMALE = 'Female', 'Female'
+        MALE = "Male", "Male"
+        FEMALE = "Female", "Female"
 
     # Personal Info
     age = models.PositiveIntegerField(default=25)
@@ -72,11 +72,7 @@ class UserProfile(AbstractUser):
     num_children = models.PositiveIntegerField(default=0)
 
     # Choice-based Fields
-    smoker = models.CharField(
-        blank=False,
-        max_length=10,
-        choices=SmokerType.choices
-    )
+    smoker = models.CharField(blank=False, max_length=10, choices=SmokerType.choices)
     region = models.CharField(
         blank=False,
         max_length=10,
@@ -99,14 +95,13 @@ class UserProfile(AbstractUser):
     def __str__(self):
         return f"{self.username}"
 
-    
 
 class PredictionHistory(models.Model):
     """
     Represents a record of an insurance prediction for a user.
 
-    This model stores the details of a user's historical insurance prediction, 
-    including the user's personal information at the time of the prediction and 
+    This model stores the details of a user's historical insurance prediction,
+    including the user's personal information at the time of the prediction and
     the predicted insurance charges.
 
     Attributes:
@@ -128,7 +123,7 @@ class PredictionHistory(models.Model):
         __str__():
             Returns a string representation of the prediction, showing the user and timestamp.
             Example: 'John Doe prediction @ 2025-02-01'
-        
+
     Meta:
         ordering (list): Orders predictions by timestamp in descending order.
         verbose_name (str): The singular name for the prediction record.
@@ -150,10 +145,9 @@ class PredictionHistory(models.Model):
     Returns:
         str: The string representation of the insurance prediction.
     """
+
     user = models.ForeignKey(
-        UserProfile,
-        on_delete=models.CASCADE,
-        related_name='insurance_predictions'
+        UserProfile, on_delete=models.CASCADE, related_name="insurance_predictions"
     )
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -168,17 +162,15 @@ class PredictionHistory(models.Model):
 
     # Prediction Result
     predicted_charges = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        help_text="Predicted insurance charges in USD"
+        max_digits=10, decimal_places=2, help_text="Predicted insurance charges in USD"
     )
 
     class Meta:
-        ordering = ['-timestamp']
+        ordering = ["-timestamp"]
         verbose_name = "Insurance Prediction"
         verbose_name_plural = "Insurance Predictions"
         indexes = [
-            models.Index(fields=['user', '-timestamp']),
+            models.Index(fields=["user", "-timestamp"]),
         ]
 
     # Derived Field
@@ -192,7 +184,6 @@ class PredictionHistory(models.Model):
     def __str__(self):
         return f"{self.user} prediction @ {self.timestamp:%Y-%m-%d}"
 
-    
 
 # For the join us job application form
 class JobApplication(models.Model):
@@ -222,9 +213,10 @@ class JobApplication(models.Model):
     Returns:
         str: The name of the applicant as a string.
     """
+
     name = models.CharField(max_length=255)
     email = models.EmailField()
-    resume = models.FileField(upload_to='resumes/')
+    resume = models.FileField(upload_to="resumes/")
     cover_letter = models.TextField()
 
     def __str__(self):
@@ -260,6 +252,7 @@ class Job(models.Model):
     Returns:
         str: The title of the job position as a string.
     """
+
     title = models.CharField(max_length=255)
     description = models.TextField()
     location = models.CharField(max_length=100, default="Remote")
@@ -268,7 +261,6 @@ class Job(models.Model):
 
     def __str__(self):
         return self.title
-
 
 
 class ContactMessage(models.Model):
@@ -298,6 +290,7 @@ class ContactMessage(models.Model):
     Returns:
         str: A string representing the contact message in a readable format.
     """
+
     name = models.CharField(max_length=255)
     email = models.EmailField()
     message = models.TextField()
@@ -306,13 +299,13 @@ class ContactMessage(models.Model):
     def __str__(self):
         return f"Message from {self.name} ({self.email})"
 
-    
+
 class Availability(models.Model):
     """
     Represents the availability of time slots for a specific date.
 
-    This model stores the available time slots for a given date, where each date has a 
-    list of available times. The time slots are stored as a JSON field for flexibility, 
+    This model stores the available time slots for a given date, where each date has a
+    list of available times. The time slots are stored as a JSON field for flexibility,
     and the date field is unique, ensuring that each date can only have one set of time slots.
 
     Attributes:
@@ -327,16 +320,17 @@ class Availability(models.Model):
     Args:
         date (datetime.date): The date for which the availability is recorded.
         time_slots (list): A list of strings representing the available time slots for that date.
-    
+
     Returns:
         str: A string that represents the date and available time slots in a readable format.
     """
+
     date = models.DateField(unique=True)
     time_slots = models.JSONField(default=list)  # Store available times as a list
 
     def __str__(self):
         return f"{self.date} - {', '.join(self.time_slots)}"
-    
+
 
 class Appointment(models.Model):
     """
@@ -347,7 +341,7 @@ class Appointment(models.Model):
 
     Attributes:
         user (ForeignKey): A reference to the user who made the appointment. This is a foreign key to the user model.
-        reason (CharField): A field to store the reason for the appointment, with choices like 'Consultation', 
+        reason (CharField): A field to store the reason for the appointment, with choices like 'Consultation',
                              'Insurance Claim', and 'Policy Inquiry'.
         date (DateField): The date of the appointment. The default date is set to February 3, 2025.
         time (CharField): The time of the appointment, stored as a string in the format of HH:MM.
@@ -366,6 +360,7 @@ class Appointment(models.Model):
     Returns:
         str: A string that represents the appointment in a readable format.
     """
+
     REASON_CHOICES = [
         ("Consultation", "Consultation"),
         ("Insurance Claim", "Insurance Claim"),
@@ -379,5 +374,3 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.reason} on {self.date} at {self.time}"
-
-

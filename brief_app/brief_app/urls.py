@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('insurance_app.urls')),     # To include the urls from the app
-    path('reload/', include('django_browser_reload.urls')),
+    path("admin/", admin.site.urls),
+    path("", include("insurance_app.urls")),  # To include the urls from the app
+    path("reload/", include("django_browser_reload.urls")),
 ]

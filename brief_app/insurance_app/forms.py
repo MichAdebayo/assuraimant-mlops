@@ -6,12 +6,13 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.hashers import make_password
 from django.forms import DateInput
 
+
 class PredictChargesForm(forms.ModelForm):
     """
     Form for predicting insurance charges based on user profile information.
 
-    This form allows users to input their personal details, such as age, 
-    height, weight, number of children, and smoking status, in order to 
+    This form allows users to input their personal details, such as age,
+    height, weight, number of children, and smoking status, in order to
     predict insurance charges. It is based on the `UserProfile` model.
 
     Attributes:
@@ -34,6 +35,7 @@ class PredictChargesForm(forms.ModelForm):
             Validates the smoker field to ensure it contains a valid choice.
 
     """
+
     class Meta:
         model = UserProfile
         fields = ["age", "height", "weight", "num_children", "smoker"]
@@ -43,10 +45,10 @@ class UserProfileForm(forms.ModelForm):
     """
     Form for updating user profile information, based on the UserProfile model.
 
-    This form is used to update various details of a user's profile, including 
-    personal information like name, username, email, as well as health-related 
-    details like age, weight, height, and lifestyle information like smoking status, 
-    region, and sex. The form provides an interface for users to update their profile 
+    This form is used to update various details of a user's profile, including
+    personal information like name, username, email, as well as health-related
+    details like age, weight, height, and lifestyle information like smoking status,
+    region, and sex. The form provides an interface for users to update their profile
     information in the application.
 
     Attributes:
@@ -63,15 +65,25 @@ class UserProfileForm(forms.ModelForm):
         height: The user's height (in centimeters).
 
     Methods:
-        save(commit=True): 
-            Saves the updated user profile to the database. If commit is True, 
+        save(commit=True):
+            Saves the updated user profile to the database. If commit is True,
             the user profile is saved; otherwise, it is just returned without saving.
     """
+
     class Meta:
         model = UserProfile
         fields = [
-            "first_name", "last_name", "username", "email",
-            "smoker", "region", "sex", "num_children", "age", "weight", "height",
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+            "smoker",
+            "region",
+            "sex",
+            "num_children",
+            "age",
+            "weight",
+            "height",
         ]
 
 
@@ -79,9 +91,9 @@ class UserSignupForm(forms.ModelForm):
     """
     Form for user signup, based on the UserProfile model.
 
-    This form is used for creating a new user. It includes fields for the username, 
-    email, and password. The password field uses a password input widget to hide 
-    the user's input for security. Upon submission, the form hashes the password 
+    This form is used for creating a new user. It includes fields for the username,
+    email, and password. The password field uses a password input widget to hide
+    the user's input for security. Upon submission, the form hashes the password
     before saving the user to the database.
 
     Attributes:
@@ -90,11 +102,12 @@ class UserSignupForm(forms.ModelForm):
         password: The password of the user, entered as a hidden field for security.
 
     Methods:
-        save(commit=True): 
+        save(commit=True):
             Saves the user object to the database after hashing the password.
-            If commit is set to True, the user is saved to the database; otherwise, 
+            If commit is set to True, the user is saved to the database; otherwise,
             it is just returned without being saved.
     """
+
     password = forms.CharField(
         widget=forms.PasswordInput, label="Password"
     )  # Password field with hidden input
@@ -119,16 +132,17 @@ class UserLoginForm(forms.Form):
     """
     Form for user login.
 
-    This form is used to authenticate users by collecting their username and 
-    password. It is not based on a model but rather provides fields for the user 
-    to input their login credentials. The password field is hidden for security 
+    This form is used to authenticate users by collecting their username and
+    password. It is not based on a model but rather provides fields for the user
+    to input their login credentials. The password field is hidden for security
     purposes.
 
     Attributes:
         username: The username of the user attempting to log in.
-        password: The password of the user attempting to log in, entered as a 
+        password: The password of the user attempting to log in, entered as a
                   hidden field for security.
     """
+
     username = forms.CharField(
         max_length=150, label="Username"
     )  # Field for the username
@@ -141,9 +155,9 @@ class ApplicationForm(forms.ModelForm):
     """
     Form for submitting a job application.
 
-    This form is used for candidates to apply for a job by providing their name, 
-    email, resume, and cover letter. The resume is optional, while the name, email, 
-    and cover letter are required fields. The form is linked to the `JobApplication` 
+    This form is used for candidates to apply for a job by providing their name,
+    email, resume, and cover letter. The resume is optional, while the name, email,
+    and cover letter are required fields. The form is linked to the `JobApplication`
     model for storing the application data.
 
     Attributes:
@@ -152,6 +166,7 @@ class ApplicationForm(forms.ModelForm):
         resume: The applicant's resume file (optional).
         cover_letter: The applicant's cover letter.
     """
+
     class Meta:
         model = JobApplication  # This will be the model for storing application data
         fields = ["name", "email", "resume", "cover_letter"]
@@ -168,8 +183,8 @@ class ChangePasswordForm(PasswordChangeForm):
 
     This form allows the user to update their password by entering their current
     password and providing a new password (and confirming it). The form includes
-    validation for password strength and ensures that the new password meets 
-    security requirements. It also customizes labels and adds help text with 
+    validation for password strength and ensures that the new password meets
+    security requirements. It also customizes labels and adds help text with
     password guidelines for the user.
 
     Attributes:
@@ -177,11 +192,12 @@ class ChangePasswordForm(PasswordChangeForm):
         new_password1: The new password field, which must meet security criteria.
         new_password2: A confirmation field for the new password, ensuring it matches.
     """
+
     def __init__(self, *args, **kwargs):
         """
         Initializes the ChangePasswordForm with custom labels, help text, and styles.
 
-        Customizes the labels of the password fields, adds helpful text to 
+        Customizes the labels of the password fields, adds helpful text to
         guide users on password requirements, and applies Tailwind CSS styles
         to the form fields for consistent styling.
         """
@@ -206,7 +222,8 @@ class ChangePasswordForm(PasswordChangeForm):
             self.fields[field].widget.attrs.update(
                 {
                     "class": "w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-400",
-                })
+                }
+            )
 
 
 class AppointmentForm(forms.ModelForm):
@@ -215,7 +232,7 @@ class AppointmentForm(forms.ModelForm):
 
     This form allows users to select a reason for the appointment, specify the
     date, and choose a time. It includes validation for the time field to ensure
-    it follows the correct format (HH:MM, 24-hour clock). The date field is 
+    it follows the correct format (HH:MM, 24-hour clock). The date field is
     rendered with a custom widget for better styling.
 
     Attributes:
@@ -223,11 +240,17 @@ class AppointmentForm(forms.ModelForm):
         date: The date of the appointment, displayed with a date picker.
         time: The time of the appointment, validated to ensure it follows the HH:MM format.
     """
+
     class Meta:
         model = Appointment
-        fields = ['reason', 'date', 'time']
+        fields = ["reason", "date", "time"]
         widgets = {
-            'date': DateInput(attrs={'type': 'date', 'class': 'form-control w-full bg-gray-100 rounded-md p-2'}),
+            "date": DateInput(
+                attrs={
+                    "type": "date",
+                    "class": "form-control w-full bg-gray-100 rounded-md p-2",
+                }
+            ),
         }
 
     def clean_time(self):
@@ -243,7 +266,7 @@ class AppointmentForm(forms.ModelForm):
         Raises:
             forms.ValidationError: If the time format is invalid.
         """
-        time = self.cleaned_data.get('time')
+        time = self.cleaned_data.get("time")
         try:
             if not time:
                 raise forms.ValidationError("This field is required.")
