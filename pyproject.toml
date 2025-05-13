@@ -1,0 +1,17 @@
+# pyproject.toml
+[tool.black]
+line-length = 88
+exclude = '''
+/(
+    \.venv
+  | migrations
+  | __pycache__
+  | .vscode
+  | .pytest_cache
+  | .coverage
+)/
+'''
+
+[tool.isort]
+profile = "black"
+skip = [".venv", "migrations", ".vscode",".pytest_cache",".coverage"]
