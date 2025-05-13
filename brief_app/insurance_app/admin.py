@@ -193,26 +193,7 @@ class AppointmentAdmin(admin.ModelAdmin):
     date_hierarchy = 'date'
     ordering = ('-date',)
 
-    # def formfield_for_choice_field(self, db_field, request, **kwargs):
-    #     """
-    #     Customizes the choices for the time field.
-
-    #     This method is used to provide predefined time slots from 09:00 to 18:00 
-    #     for the "time" field in the appointment form.
-
-    #     Args:
-    #         db_field (Field): The database field being customized.
-    #         request (HttpRequest): The HTTP request object.
-    #         kwargs (dict): Additional arguments for customizing the field.
-
-    #     Returns:
-    #         Field: The customized choice field with time slot options.
-    #     """
-    #     if db_field.name == 'time':
-    #         kwargs['choices'] = [(f"{hour:02}:00", f"{hour:02}:00") for hour in range(9, 19)]
-    #     return super().formfield_for_choice_field(db_field, request, **kwargs)
-
-def formfield_for_choice_field(self, db_field, request, **kwargs):
+    def formfield_for_choice_field(self, db_field, request, **kwargs):
         """
         Customizes the choices for the time field.
 
@@ -228,8 +209,8 @@ def formfield_for_choice_field(self, db_field, request, **kwargs):
             Field: The customized choice field with time slot options.
         """
         if db_field.name == 'time' and (hasattr(db_field, 'choices') or db_field.get_internal_type() == 'CharField'):
-            kwargs['choices'] = [(f"{hour:02d}:00", f"{hour:02d}:00") for hour in range(9, 19)]
+            kwargs['choices'] = [(f"{hour:02}:00", f"{hour:02}:00") for hour in range(9, 19)]
         return super().formfield_for_choice_field(db_field, request, **kwargs)
-
+  
 # Register the model and custom admin
 admin.site.register(Appointment, AppointmentAdmin)
