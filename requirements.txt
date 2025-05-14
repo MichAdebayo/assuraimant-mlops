@@ -8,7 +8,7 @@ dotenv==0.9.9
 flake8==7.2.0
 iniconfig==2.1.0
 mccabe==0.7.0
--e git+https://github.com/MichAdebayo/assuraimant-ci-cd/@05dfba9dbfb6a354d090fd1a8e9d34726a536daf#egg=mon_projet
+# -e git+https://github.com/MichAdebayo/assuraimant-ci-cd/@05dfba9dbfb6a354d090fd1a8e9d34726a536daf#egg=mon_projet
 mypy==1.15.0
 mypy_extensions==1.1.0
 numpy==2.2.5

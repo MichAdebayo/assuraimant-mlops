@@ -1,4 +1,22 @@
-# pyproject.toml
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "assuraimant_ci_cd"
+version = "0.1.0"
+description = "A CI/CD project for Django application"
+authors = [
+    { name = "Your Name", email = "your.email@example.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+dependencies = [
+    "django>=4.0",
+    "djangorestframework",
+    "psycopg2-binary",
+]
+
 [tool.black]
 line-length = 88
 exclude = '''
@@ -14,8 +32,8 @@ exclude = '''
 
 [tool.isort]
 profile = "black"
-skip = [".venv", "migrations", ".vscode",".pytest_cache",".coverage"]
+skip = [".venv", "migrations", ".vscode", ".pytest_cache", ".coverage"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-packages = ["ci_cd", "brief_app", "project-wide-tests"]
+packages = { find = { where = ["src"] } }
