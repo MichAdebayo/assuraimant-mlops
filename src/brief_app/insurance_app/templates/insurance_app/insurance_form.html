@@ -1,0 +1,148 @@
+{% extends "insurance_app/base_final.html" %}
+
+{% block content %}
+<section id="insurance-estimate-form" class="bg-gray-50 py-10">
+
+    <div class="container mx-auto flex justify-between items-start">  
+    <div class="w-1/2 bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-3xl font-bold mb-6 text-[#006f4e]">Estimate Your Insurance Charges</h2>
+        <p class="text-lg text-gray-900 mb-6">Fill out the form below to estimate your insurance charges. We will review your information and calculate the best estimate for you.</p>
+
+        <form method="post" id="charge-form" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+                <label for="height" class="block text-left text-lg text-gray-900">Height (in cm)</label>
+                <input type="number" id="height" name="height" min="50" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+            </div>
+            
+            <div class="mb-4">
+                <label for="weight" class="block text-left text-lg text-gray-900">Weight (in kg)</label>
+                <input type="number" id="weight" name="weight" min="1" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+            </div>
+            
+            <div class="mb-4">
+                <label for="age" class="block text-left text-lg text-gray-900">Age</label>
+                <input type="number" id="age" name="age" min="0" max="120" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+            </div>
+            
+            <div class="mb-4">
+                <label for="sex" class="block text-left text-lg text-gray-900">Sex</label>
+                <select id="sex" name="sex" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label for="smoker" class="block text-left text-lg text-gray-900">Smoker</label>
+                <select id="smoker" name="smoker" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+                    <option value="yes">Yes</option>  <!-- Fixing issues with the model code -->
+                    <option value="no">No</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label for="region" class="block text-left text-lg text-gray-900">Region</label>
+                <select id="region" name="region" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+                    <option value="northeast">North East</option>
+                    <option value="southeast">South East</option>
+                    <option value="northwest">North West</option>
+                    <option value="southwest">South West</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label for="children" class="block text-left text-lg text-gray-900">Number of Children</label>
+                <input type="number" id="children" name="children" min="0" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+            </div>
+             
+        </form>
+     </div>
+     <div class="w-1/2 ml-10 flex flex-col items-center justify-center">
+        <div class="bg-white p-6 my-4 rounded-lg shadow-md w-full text-center">
+            <p class="text-lg font-semibold">Your estimated charges are:</p>
+            <p class="text-2xl font-bold text-[#006f4e] mt-2">$ <span id="prediction">-</span></p>
+        </div>
+
+        <div class="mt-6 w-full text-center">
+            <a href="{% url 'signup' %}" class="btn-style w-full py-4 px-6 bg-[#006f4e] text-white rounded-lg hover:bg-[#009b9d]">
+                Get Your Tailored Health Plan and Save Today
+            </a>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    const form = document.getElementById("insurance-estimate-form");
+    const predictionElement = document.getElementById("prediction");
+    
+    function updatePrediction() {
+        // Get form data
+        const height = parseFloat(document.getElementById("height").value) || 0;
+        const weight = parseFloat(document.getElementById("weight").value) || 0;
+        const age = parseInt(document.getElementById("age").value) || 0;
+        const sex = document.getElementById("sex").value;
+        const smoker = document.getElementById("smoker").value;
+        const region = document.getElementById("region").value;
+        const children = parseInt(document.getElementById("children").value) || 0;
+    
+        // Calculate BMI if height and weight are provided
+        let bmi = 0;
+        if (height > 0 && weight > 0) {
+          bmi = weight / ((height / 100) ** 2);
+        }
+    
+        // Calculate BMI category
+        let bmi_category = '';
+        if (bmi < 18.5) {
+            bmi_category = 'Sous-poids';
+        } else if (bmi < 24.9) {
+            bmi_category = 'Poids normal';
+        } else if (bmi < 29.9) {
+            bmi_category = 'Surpoids';
+        } else if (bmi < 40) {
+            bmi_category = 'Obésité';
+        } else {
+            bmi_category = 'Obésité sévère';
+        }
+    
+        // Send data to the server using Fetch API
+        fetch("/quote-predict/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}" // Include CSRF token for security
+            },
+            body: JSON.stringify({
+                height,
+                weight,
+                age,
+                sex,
+                smoker,
+                region,
+                children,
+                bmi,
+                bmi_category,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the prediction element
+            predictionElement.textContent = data.prediction || "Error";
+        })
+        .catch(error => {
+            console.error("Error during prediction:", error);
+            predictionElement.textContent = "Error";
+        });
+    }
+    
+    // Add event listeners to all form fields
+    form.querySelectorAll("input, select").forEach(input => {
+        input.addEventListener("input", updatePrediction);
+    });
+  
+  </script>
+  
+{% endblock %}

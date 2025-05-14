@@ -1,0 +1,108 @@
+{% extends "insurance_app/base_final.html" %}
+{% load static %}
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-cover bg-center bg-no-repeat py-20" style="background-image: url('{% static 'images/join_us.svg' %}');">
+    <div class="absolute inset-0 bg-black opacity-30"></div> <!-- Dark overlay -->
+    <div class="container mx-auto text-center relative z-10">
+        <h2 class="text-4xl text-white font-bold mb-4">Join Our Team</h2>
+        <p class="text-lg text-white mb-8">We’re looking for passionate individuals to make a difference with us!</p>
+    
+    </div>
+</section>
+
+<!-- Job Section --> 
+<section class="py-10">
+    <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6 text-[#006f4e]">Current Job Openings</h2> <!-- Amber accent -->
+        <p class="text-lg text-gray-900 mb-6">
+            We are seeking passionate individuals for various roles. If you’re a team player with a passion for innovation, we’d love to hear from you!
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for job in jobs %}
+            <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl hover:bg-gradient-to-r from-[#009b9d] via-emerald-100 to-white transition-all"> <!-- Warm gradient on hover -->
+                <h3 class="text-xl font-bold text-[#ed1c24]">{{ job.title }}</h3> <!-- Rose-colored titles -->
+                <p class="text-gray-600">Location: {{ job.location }} | Experience: {{ job.experience }}</p>
+                <p class="mt-4">{{ job.description }}</p>
+                <a href="#job-application-form" 
+                    class="text-[#006f4e] hover:text-[#ed1c24] mt-4 block"
+                    data-job-id="{{job.job_id}}"
+                    data-job-title="{{job.title}}">Apply Now</a> <!-- Orange link to match hero -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Why Work For Us Section -->
+<section class="bg-[#009b9d] bg-opacity-90 py-10">
+    <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6 text-white">Why Work For Us</h2>
+        <p class="text-lg text-gray-900 mb-4">
+            At Assur'Aimant, we believe in fostering a culture of innovation, inclusivity, and growth.
+        </p>
+        <p class="text-lg text-gray-900 mb-4">
+            Our employees enjoy opportunities for professional development, competitive benefits, and the chance to work with a diverse and talented team.
+        </p>
+        <p class="text-lg text-gray-900">
+            Join us to make a difference in the insurance industry and grow your career with a company that values you.
+        </p>
+    </div>
+</section>
+
+<!-- Application Form Section -->
+<section id="job-application-form" class="bg-gray-50 py-10">
+    <div class="container mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-6 text-[#006f4e]">Apply for a Job</h2> <!-- Orange for CTA -->
+        <p class="text-lg text-gray-700 mb-6">Fill out the form below to apply for one of our jobs. We will review your application and get in touch with you soon.</p>
+
+        <form method="post" action="{% url 'apply' %}" enctype="multipart/form-data" class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+            {% csrf_token %}
+            <div class="mb-4">
+                <label for="name" class="block text-left text-lg text-gray-900">Full Name</label> <!-- Amber label color -->
+                <input type="text" id="name" name="name" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+            </div>
+            <div class="mb-4">
+                <label for="email" class="block text-left text-lg text-gray-900">Email Address</label>
+                <input type="email" id="email" name="email" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+            </div>
+            <div class="mb-4">
+                <label for="job_id" class="block text-left text-lg text-gray-900">Job Role</label>
+                <select id="job_id" name="job_id" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+                    <option value="">Select a Job</option>
+                    {% for job in jobs %}
+                    <option value="{{ job.job_id }}">{{ job.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="resume" class="block text-left text-lg text-gray-900">Upload Resume</label>
+                <input type="file" id="resume" name="resume" class="w-full p-3 mt-2 border border-gray-300 rounded" required>
+            </div>
+            <button type="submit" class="w-full py-3 bg-[#006f4e] text-white rounded-lg hover:bg-[#009b9d]">Submit Application</button> <!-- Orange CTA -->
+        </form>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const jobLinks = document.querySelectorAll('a[data-job-id]');
+        const jobDropdown = document.getElementById('job_id');
+        
+        jobLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                const jobId = this.getAttribute('data-job-id');
+                const jobTitle = this.getAttribute('data-job-title');
+                
+                // Find the matching dropdown option and select it
+                for (let option of jobDropdown.options) {
+                    if (option.value === jobId) {
+                        option.selected = true;
+                        break;
+                    }
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

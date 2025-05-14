@@ -1,0 +1,303 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assur'Aimant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+
+<body class="min-h-screen flex flex-col text-whitesmoke font-sans bg-[#FBFCFA] scroll-smooth">
+
+    <!-- Header -->
+    <header class="bg-[#006f4e] text-white py-2 fixed w-full top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <!-- Logo and Home Link -->
+            <a href="{% url 'home' %}" class="flex items-center h-full py-2 space-x-2">
+                <!-- SVG Logo -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 137 134" class="h-10 md:h-12 w-auto svg-animations" role="img" aria-labelledby="logoTitle">
+                    <title id="logoTitle">Assur'Aimant Logo</title>
+                    <path d="M53.5663 34.6963C30.6231 39.316 13.2852 59.5908 13.2852 83.8273C13.2852 111.464 35.8162 133.959 63.5267 133.959C91.2372 133.959 113.755 111.464 113.755 83.8273C113.755 70.681 108.658 58.7135 100.332 49.7619C103.533 55.2178 105.388 61.5648 105.388 68.3505C105.388 88.6801 88.8742 105.158 68.5001 105.158C48.1259 105.158 31.6123 88.6801 31.6123 68.3505C31.6123 53.3261 40.6384 40.4127 53.5663 34.6963Z" style="fill: #ed1c24;"/>
+                    <path d="M68.5 0C30.6643 0 0 30.5972 0 68.3503C0 84.3343 5.50913 99.0298 14.7276 110.668C10.3039 102.704 7.78971 93.5601 7.78971 83.8271C7.78971 53.1613 32.7937 28.212 63.5267 28.212C94.2596 28.212 119.25 53.1613 119.25 83.8271C119.25 105.911 106.281 125.021 87.5415 134C116.104 125.761 136.986 99.4959 136.986 68.3503C137 30.5972 106.336 0 68.5 0Z" style="fill: #ed1c24;"/>
+                </svg>
+                <span class="text-white font-bold text-2xl md:text-3xl font-sans hover:opacity-90 transition-opacity">
+                    Assur'Aimant
+                </span>
+            </a>
+    
+            <!-- Navigation: buttons will be on the right -->
+            {% if request.resolver_match.url_name != 'logout_user' %}
+                <nav class="flex items-center">
+                    <div class="flex items-center space-x-8">
+                        {% if user.is_authenticated %}
+                            <!-- Authenticated User Navigation -->
+                            <div x-data="{ open: false }" class="relative inline-block">
+                                <button @click="open = !open" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">
+                                    My Assur'Aimant
+                                </button>
+                                <div x-show="open" @click.away="open = false" class="absolute bg-white text-gray-900 mt-2 rounded shadow-md w-48">
+                                    <a href="{% url 'welcome' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">My Account</a>
+                                    <a href="{% url 'profile' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Edit Profile</a>
+                                    <a href="{% url 'changepassword' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Change Password</a>
+                                </div>
+                            </div>
+    
+                            <form action="{% url 'contact_form' %}" method="GET" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="px-4 py-2 rounded transition 
+                                    {% if request.resolver_match.url_name == 'contact_form' %}
+                                        bg-[#026f4e] text-white shadow-lg
+                                    {% else %}
+                                        hover:bg-[#ed1c24] hover:text-white
+                                    {% endif %}">
+                                    Contact support
+                                </button>
+                            </form>
+    
+                            <form action="{% url 'logout_user' %}" method="POST" class="inline">
+                                {% csrf_token %}
+                                <button type="submit" class="px-4 py-2 rounded transition 
+                                    {% if request.resolver_match.url_name == 'logout_user' %}
+                                        bg-[#026f4e] text-white shadow-lg
+                                    {% else %}
+                                        hover:bg-[#ed1c24] hover:text-white
+                                    {% endif %}">
+                                    Logout
+                                </button>
+                            </form>
+                        {% else %}
+                            <!-- Non-Authenticated User Navigation -->
+                            <a href="{% url 'login' %}" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">Login</a>
+                            <a href="{% url 'signup' %}" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">Sign Up</a>
+
+                            <div x-data="{ open: false }" class="relative inline-block">
+                                <button @click="open = !open" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">
+                                    About Assur'Aimant
+                                </button>
+                                <div x-show="open" @click.away="open = false" class="absolute bg-white text-gray-900 mt-2 rounded shadow-md w-48">
+                                    <a href="{% url 'about' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">About Us</a>
+                                    <a href="{% url 'join_us' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Join Us</a>
+                                </div>
+                            </div>
+
+                            <div x-data="{ open: false }" class="relative inline-block">
+                                <button @click="open = !open" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">
+                                    Our Services
+                                </button>
+                                <div x-show="open" @click.away="open = false" class="absolute bg-white text-black mt-2 rounded shadow-md w-48">
+                                    <a href="{% url 'contact' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Contact Us</a>
+                                    <a href="{% url 'predict_charges' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Get a Quote</a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </nav>
+            {% else %}
+                <!-- Minimal Navigation for Logout Page -->
+                <nav class="flex items-center space-x-4">
+                    <a href="{% url 'contact' %}" class="px-4 py-2 rounded hover:bg-[#ed1c24] transition-colors">
+                        Contact Us
+                    </a>
+                </nav>
+            {% endif %}
+        </div>
+    </header>
+
+    <style>
+        .svg-animations {
+            transition: transform 0.3s ease;
+        }
+        .svg-animations:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+    <!-- Main Content -->
+    <main class="my-6 pt-14">
+        {% block content %} {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#006f4e] text-white py-2 md:py-4 mt-auto">
+        <div class="container mx-auto text-center text-sm md:text-base">
+            &copy; 2025 Assur'Aimant. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>
+
+
+{% comment %} {% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assur'Aimant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+
+<body class="min-h-screen flex flex-col text-whitesmoke font-sans bg-[#FBFCFA] scroll-smooth">
+
+    <!-- Header -->
+    <header class="bg-[#006f4e] text-white py-2 fixed w-full top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center px-6">
+            <!-- Logo and Home Link -->
+            <a href="{% url 'home' %}" class="flex items-center h-full py-2 space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 137 134" class="h-10 md:h-12 w-auto svg-animations" role="img" aria-labelledby="logoTitle">
+                    <title id="logoTitle">Assur'Aimant Logo</title>
+                    <path d="M53.5663 34.6963C30.6231 39.316 13.2852 59.5908 13.2852 83.8273C13.2852 111.464 35.8162 133.959 63.5267 133.959C91.2372 133.959 113.755 111.464 113.755 83.8273C113.755 70.681 108.658 58.7135 100.332 49.7619C103.533 55.2178 105.388 61.5648 105.388 68.3505C105.388 88.6801 88.8742 105.158 68.5001 105.158C48.1259 105.158 31.6123 88.6801 31.6123 68.3505C31.6123 53.3261 40.6384 40.4127 53.5663 34.6963Z" style="fill: #ed1c24;"/>
+                    <path d="M68.5 0C30.6643 0 0 30.5972 0 68.3503C0 84.3343 5.50913 99.0298 14.7276 110.668C10.3039 102.704 7.78971 93.5601 7.78971 83.8271C7.78971 53.1613 32.7937 28.212 63.5267 28.212C94.2596 28.212 119.25 53.1613 119.25 83.8271C119.25 105.911 106.281 125.021 87.5415 134C116.104 125.761 136.986 99.4959 136.986 68.3503C137 30.5972 106.336 0 68.5 0Z" style="fill: #ed1c24;"/>
+                </svg>
+                <span class="text-white font-bold text-2xl md:text-3xl font-sans hover:opacity-90 transition-opacity">Assur'Aimant</span>
+            </a>
+
+            <!-- Navbar for Authenticated and Non-Authenticated Users -->
+            <nav class="flex justify-between w-full">
+                <!-- Left Side: Logo and Home -->
+                <div></div>
+
+
+                <!-- Dropdown Menus for Authenticated Users -->
+            <div class="flex items-center space-x-8">
+                    {% if user.is_authenticated %}
+                    <!-- Welcome and Logout (Authenticated) -->
+                <div>
+                        <!-- My Assur'Aimant Dropdown -->
+                        <div x-data="{ open: false }" class="relative inline-block">
+                            <button @click="open = !open" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">
+                                My Assur'Aimant
+                            </button>
+                            <div x-show="open" @click.away="open = false" class="absolute bg-white text-gray-900 mt-2 rounded shadow-md w-48">
+                                <a href="{% url 'welcome' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">My Account</a>
+                                <a href="{% url 'profile' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Edit Profile</a>
+                                <a href="{% url 'changepassword' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Change Password</a>
+
+                            </div>
+                        <form action="{% url 'contact_form' %}" method="GET" class="inline">
+                            {% csrf_token %}
+                                <button type="submit" class="px-4 py-2 rounded transition 
+                                    {% if request.resolver_match.url_name == 'contact_form' %}
+                                        bg-[#026f4e] text-white shadow-lg
+                                    {% else %}
+                                        hover:bg-[#ed1c24] hover:text-white
+                                    {% endif %}">
+                                    Contact support
+                                </button>
+                        </form>
+
+                        <form action="{% url 'logout_user' %}" method="POST" class="inline">
+                        {% csrf_token %}
+                         <button type="submit" class="px-4 py-2 rounded transition 
+                            {% if request.resolver_match.url_name == 'logout_user' %}
+                                bg-[#026f4e] text-white shadow-lg
+                            {% else %}
+                                hover:bg-[#ed1c24] hover:text-white
+                            {% endif %}">
+                            Logout
+                          </button>
+                        </form>
+
+                        <!-- About Us -->
+                        {% comment %} <div x-data="{ open: false }" class="relative inline-block">
+                            <button @click="open = !open" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">
+                                About Assur'Aimant
+                            </button>
+                            <div x-show="open" @click.away="open = false" class="absolute bg-white text-gray-900 mt-2 rounded shadow-md w-48">
+                                <a href="{% url 'about' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">About Us</a>
+                                <a href="{% url 'join_us' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Join Us</a>
+                            </div>
+                        </div> {% endcomment %}
+
+                        <!-- Our Services -->
+                        {% comment %} <div x-data="{ open: false }" class="relative inline-block">
+                            <button @click="open = !open" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">
+                                Our Services
+                            </button>
+                            <div x-show="open" @click.away="open = false" class="absolute bg-white text-gray-900 mt-2 rounded shadow-md w-48">
+                                <a href="{% url 'contact' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Contact Us</a>
+                                <a href="{% url 'predict_charges' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Get a Quote</a>
+                            </div>
+                        </div> {% endcomment %}
+
+{% comment %} 
+                    {% else %}
+
+                    <!-- Login and Sign up (Not Authenticated) -->
+                    <a href="{% url 'login' %}" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">Login</a>
+                    <a href="{% url 'signup' %}" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">Sign Up</a>
+
+                        <!-- Dropdown (Not Authenticated) -->
+
+                                        <!-- About Us -->
+                    <div x-data="{ open: false }" class="relative inline-block">
+                        <button @click="open = !open" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">
+                                About Assur'Aimant
+                        </button>
+                        <div x-show="open" @click.away="open = false" class="absolute bg-white text-gray-900 mt-2 rounded shadow-md w-48">
+                            <a href="{% url 'about' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">About Us</a>
+                            <a href="{% url 'join_us' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Join Us</a>
+                        </div>
+                    </div>
+                
+                                        <!-- Our Services -->
+                 <div x-data="{ open: false }" class="relative inline-block">
+                        <button @click="open = !open" class="px-4 py-2 border border-transparent rounded hover:bg-[#ed1c24] hover:text-white transition-all">
+                            Our Services
+                             </button>
+                                    <div x-show="open" @click.away="open = false" class="absolute bg-white text-black mt-2 rounded shadow-md w-48">
+                                        <a href="{% url 'contact' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Contact Us</a>
+                                        <a href="{% url 'predict_charges' %}" class="block px-3 py-1.5 text-sm hover:bg-gray-200">Get a Quote</a>
+                                     </div>
+                </div>
+            </div>     
+    </div>
+                    {% endif %}
+                </div>
+            </nav>
+        </div>
+    </header>
+
+   <style>
+        /* Smooth scaling */
+        .svg-animations {
+            transition: transform 0.3s ease;
+        }
+
+        .svg-animations:hover {
+            transform: scale(1.05);
+        }
+
+        /* Dropdown hover effect */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+
+    <!-- Main Content -->
+    <main class="my-6 pt-14">
+        {% block content %} {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#006f4e] text-white py-2 md:py-4 mt-auto">
+        <div class="container mx-auto text-center text-sm md:text-base">
+            &copy; 2025 Assur'Aimant. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+
+</html> {% endcomment %} 
+
+
+
+

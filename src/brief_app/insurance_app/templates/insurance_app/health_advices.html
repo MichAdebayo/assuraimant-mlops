@@ -1,0 +1,59 @@
+{% extends "insurance_app/base_final.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold text-center mb-6 text-teal-700">Your Guide to Better Health</h1>
+    <p class="text-lg text-gray-700 text-center mb-8">
+        Discover expert health tips to lead a vibrant and balanced life. Whether it's about nutrition, fitness, or mental well-being, we’ve got you covered.
+    </p>
+    
+    <!-- Section 1: Nutrition -->
+    <section class="mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <img src="https://cdn.cancercenter.com/-/media/ctca/images/others/blogs/2019/06-june/02-blog-healthy-food-l.jpg" alt="Healthy Food" class="w-full max-w-[600px] h-[400px] object-cover rounded-lg shadow-lg">
+            <div>
+                <h2 class="text-2xl font-semibold text-teal-700 mb-4">Nutrition Matters</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    A balanced diet is the foundation of good health. Include a variety of fruits, vegetables, lean proteins, and whole grains in your meals to ensure your body gets the nutrients it needs. Stay hydrated and minimize processed foods.
+                </p>
+                <ul class="list-disc list-inside text-gray-600 mt-4">
+                    <li>Opt for seasonal and local produce.</li>
+                    <li>Reduce sugar and salt intake.</li>
+                    <li>Incorporate healthy fats like nuts and avocados.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Exercise -->
+    <section class="mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+                <h2 class="text-2xl font-semibold text-teal-700 mb-4">Move Your Body</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    Regular physical activity boosts your energy, improves mood, and prevents chronic diseases. Aim for at least 30 minutes of moderate exercise most days of the week.
+                </p>
+                <ul class="list-disc list-inside text-gray-600 mt-4">
+                    <li>Try activities you enjoy, like dancing, cycling, or swimming.</li>
+                    <li>Incorporate strength training to build muscle.</li>
+                    <li>Don’t forget to stretch to maintain flexibility.</li>
+                </ul>
+            </div>
+            <img src="https://familydoctor.org/wp-content/uploads/2016/11/exercise-848x445.jpg" alt="Exercise" class="w-full max-w-[600px] h-[400px] object-cover rounded-lg shadow-lg">
+        </div>
+    </section>
+
+    <!-- Section 3: Mental Well-Being -->
+    <section class= mb-12> 
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <img src="https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-1626192387.jpg?c=original" alt="Mental Wellness" class=" w-full max-w-[600px] h-[400px] object-cover rounded-lg shadow-lg">
+            <div>
+            <h2 class="text-2xl font-semibold text-teal-700 mb-4">Take Care of Your Mind</h2>
+            <p class="text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                Mental health is just as important as physical health. Practice mindfulness, stay connected with loved ones, and seek professional help when needed. Remember, self-care is not selfish—it's essential.
+            </p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

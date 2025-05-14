@@ -1,0 +1,68 @@
+
+# Fichiers système spécifiques à Linux
+*~
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+.nfs*
+
+# Répertoires et fichiers de configuration utilisateur
+.cache/
+.config/
+.local/
+.Trash-*
+
+# Logs et fichiers temporaires
+*.log
+*.tmp
+*.bak
+*.old
+*.orig
+*.lock
+
+# Fichiers générés par les IDE
+.idea/
+.vscode/
+*.iml
+
+# Environnements virtuels Python
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers de compilation
+build/
+dist/
+*.out
+*.o
+*.class
+*.so
+*.dll
+*.exe
+
+# Fichiers générés par Django/Migrations
+*.sqlite3
+*.pyc
+db.sqlite3
+
+# Si vous utilisez Tailwind CSS
+tailwind.config.js
+postcss.config.js
+
+# Autres fichiers spécifiques au projet
+.env
+.env.local
+*.pem
+*.crt
+*.key
+.venv
