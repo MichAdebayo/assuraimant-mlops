@@ -2,17 +2,14 @@ version: '3.8'
 
 services:
   web:
-    image: ghcr.io/${GITHUB_REPOSITORY}:latest
+    image: ghcr.io/${REPO_LC}:latest
     build:
       context: .
-      args:
-        DATABASE_URL: ${DATABASE_URL}
-        SECRET_KEY: ${SECRET_KEY}
+    ports:
+      - "8000:8000"
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - SECRET_KEY=${SECRET_KEY}
-    ports:
-      - "8000:8000"
     depends_on:
       - db
 

@@ -9,7 +9,7 @@ echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 
 # Pull the Docker image from GHCR
 echo "Pulling Docker image from GitHub Container Registry..."
-docker pull ghcr.io/"$GITHUB_REPOSITORY":latest
+docker pull ghcr.io/${REPO_LC}:latest
 
 # Deploy to Render
 echo "Deploying Docker image to Render..."
@@ -23,7 +23,7 @@ curl -X POST https://api.render.com/v1/services \
   -H "Content-Type: application/json" \
   -d '{
         "serviceName": "assuraimant-web-app",
-        "image": "ghcr.io/'"$GITHUB_REPOSITORY"':latest",
+        "image": "ghcr.io/'${REPO_LC}':latest",
         "env": "docker",
         "instanceCount": 1,
         "envVars": [
