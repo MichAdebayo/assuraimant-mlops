@@ -113,16 +113,35 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Docker Compose
+      - name: Cache Docker Compose
+        uses: actions/cache@v3
+        with:
+          path: /usr/local/bin/docker-compose
+          key: ${{ runner.os }}-docker-compose
+          restore-keys: |
+            ${{ runner.os }}-docker-compose
+
+      - name: Install Docker Compose (if not cached)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
-          docker-compose --version
+          if ! [ -x "$(command -v docker-compose)" ]; then
+            echo "Docker Compose not found. Installing..."
+            sudo apt-get update
+            sudo apt-get install -y docker-compose
+          else
+            echo "Docker Compose is already cached."
+          fi
+
+      - name: Verify Docker Compose Installation
+        run: docker-compose --version
       
+      - name: Set lowercase repository name
+        run: echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+          echo "Successfully converted repository name to lowercase"
+
       - name: Build Docker image
         env:
           IMAGE_TAG: ${{ github.sha }}
-          IMAGE_NAME: ghcr.io/${{ github.repository }}/assuraimant-web-app
+          IMAGE_NAME: ghcr.io/${REPO_LC}/assuraimant-web-app
         run: |
           chmod +x ./src/ci_cd/shell/build_docker.sh
           ./src/ci_cd/shell/build_docker.sh $IMAGE_TAG
@@ -130,9 +149,9 @@ jobs:
 
       - name: Push Docker image to GitHub Container Registry
         run: |
-          docker tag my-app:latest ghcr.io/${{ github.repository }}/assuraimant-web-app:${{ github.sha }}
-          docker push ghcr.io/${{ github.repository }}/assuraimant-web-app:${{ github.sha }}
-          echo "Docker image ghcr.io/${{ github.repository }}/assuraimant-web-app:${{ github.sha }} has been created and pushed to GHCR."
+          docker tag my-app:latest ghcr.io/${REPO_LC}/assuraimant-web-app:${{ github.sha }}
+          docker push ghcr.io/${REPO_LC}/assuraimant-web-app:${{ github.sha }}
+          echo "Docker image ghcr.io/${REPO_LC}/assuraimant-web-app:${{ github.sha }} has been created and pushed to GHCR."
 
       - name: Optional Cleanup
         run: |
