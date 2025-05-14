@@ -5,4 +5,4 @@ set -e
 
 # Build Docker Compose image
 echo "Building Docker Compose image..."
-docker-compose build
+docker-compose -f ./src/ci_cd/docker/docker-compose.yml build
