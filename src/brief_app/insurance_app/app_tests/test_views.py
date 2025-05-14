@@ -6,6 +6,7 @@ import json
 
 User = get_user_model()
 
+
 class SimpleTemplateViewsTest(TestCase):
     def setUp(self):
         """Sets up the test client for each test case.
@@ -60,6 +61,7 @@ class SimpleTemplateViewsTest(TestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertTemplateUsed(resp, template)
 
+
 class FunctionBasedViewsTest(TestCase):
     def setUp(self):
         """Sets up the test client for each test case.
@@ -104,7 +106,7 @@ class FunctionBasedViewsTest(TestCase):
         self.assertTrue(ContactMessage.objects.exists())
 
         # staff member can view messages list
-        staff = User.objects.create_user('staff', 's@s.com', 'pass', is_staff=True)
+        # staff = User.objects.create_user('staff', 's@s.com', 'pass', is_staff=True)
         self.client.login(username='staff', password='pass')
         resp = self.client.get(reverse('messages_list'))
         self.assertEqual(resp.status_code, 200)
@@ -136,9 +138,10 @@ class FunctionBasedViewsTest(TestCase):
         self.assertJSONEqual(resp.content, {'times': []})
 
         # with an availability
-        av = Availability.objects.create(date='2050-12-31', time_slots=["09:00", "10:00"])
+        # av = Availability.objects.create(date='2050-12-31', time_slots=["09:00", "10:00"])
         resp = self.client.get(reverse('get_available_times') + '?date=2050-12-31')
         self.assertJSONEqual(resp.content, {'times': ["09:00", "10:00"]})
+
 
 class AuthViewsTest(TestCase):
     def setUp(self):
@@ -276,6 +279,7 @@ class AuthViewsTest(TestCase):
         # session should no longer have the auth user key
         self.assertNotIn('_auth_user_id', self.client.session)
 
+
 class PredictionViewsTest(TestCase):
     def setUp(self):
         """Sets up test environment for prediction-related view tests.
@@ -323,11 +327,11 @@ class PredictionViewsTest(TestCase):
         }
         resp = self.client.post(reverse('predict'), prediction_data, follow=True)
         self.assertEqual(resp.status_code, 200)
-        
+
         # Verify user profile was updated
         self.user.refresh_from_db()
         self.assertEqual(self.user.age, 35)
-        
+
         # Verify prediction history was created
         self.assertTrue(PredictionHistory.objects.filter(user=self.user).exists())
 
@@ -350,11 +354,11 @@ class PredictionViewsTest(TestCase):
                 sex='male',
                 predicted_charges=5000 + (i * 1000)
             )
-            
+
         resp = self.client.get(reverse('prediction_history'))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'insurance_app/prediction_history.html')
-        
+
         # Check context contains expected data
         self.assertEqual(len(resp.context['predictions']), 3)
         self.assertEqual(resp.context['total_predictions'], 3)
@@ -387,7 +391,8 @@ class PredictionViewsTest(TestCase):
         self.assertEqual(resp.status_code, 400)
         data = json.loads(resp.content)
         self.assertIn('error', data)
-        
+
+
 class AppointmentViewsTest(TestCase):
     def setUp(self):
         """Sets up test environment for appointment-related view tests.
@@ -418,7 +423,7 @@ class AppointmentViewsTest(TestCase):
         resp = self.client.get(reverse('book_appointment'))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, 'insurance_app/book_appointment.html')
-        
+
         # Check context contains expected data
         self.assertIn('form', resp.context)
         self.assertIn('today', resp.context)
@@ -439,7 +444,7 @@ class AppointmentViewsTest(TestCase):
         
         resp = self.client.post(reverse('book_appointment'), appointment_data, follow=True)
         self.assertEqual(resp.status_code, 200)
-        
+
         # Verify appointment was created
         self.assertTrue(Appointment.objects.filter(
             user=self.user,
