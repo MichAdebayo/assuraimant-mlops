@@ -108,7 +108,7 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
         run: |
-          python manage.py test
+          python src/brief_app/manage.py test
 
   build:
     runs-on: ubuntu-latest
