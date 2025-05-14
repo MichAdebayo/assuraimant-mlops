@@ -1,3 +1,38 @@
+asgiref==3.8.1
+black==25.1.0
+click==8.2.0
+coverage==7.8.0
+Django==5.2.1
+django-browser-reload==1.18.0
+dotenv==0.9.9
+flake8==7.2.0
+iniconfig==2.1.0
+mccabe==0.7.0
+-e git+https://github.com/MichAdebayo/assuraimant-ci-cd/@05dfba9dbfb6a354d090fd1a8e9d34726a536daf#egg=mon_projet
+mypy==1.15.0
+mypy_extensions==1.1.0
+numpy==2.2.5
+packaging==25.0
+pandas==2.2.3
+pathspec==0.12.1
+platformdirs==4.3.8
+pluggy==1.5.0
+pycodestyle==2.13.0
+pyflakes==3.3.2
+pytest==8.3.5
+pytest-cov==6.1.1
+pytest-django==4.11.1
+python-dateutil==2.9.0.post0
+python-dotenv==1.1.0
+pytz==2025.2
+six==1.17.0
+sqlparse==0.5.3
+tailwind==3.1.5b0
+typing_extensions==4.13.2
+tzdata==2025.2
+whitenoise==6.9.0
+
+
 # altair==5.5.0
 # annotated-types==0.7.0
 # asgiref==3.8.1
@@ -97,36 +132,3 @@
 # wcwidth==0.2.13
 # whitenoise==6.8.2
 
-asgiref==3.8.1
-black==25.1.0
-click==8.2.0
-coverage==7.8.0
-Django==5.2.1
-django-browser-reload==1.18.0
-dotenv==0.9.9
-flake8==7.2.0
-iniconfig==2.1.0
-mccabe==0.7.0
--e git+https://github.com/MichAdebayo/assuraimant-ci-cd/@05dfba9dbfb6a354d090fd1a8e9d34726a536daf#egg=mon_projet
-mypy==1.15.0
-mypy_extensions==1.1.0
-numpy==2.2.5
-packaging==25.0
-pandas==2.2.3
-pathspec==0.12.1
-platformdirs==4.3.8
-pluggy==1.5.0
-pycodestyle==2.13.0
-pyflakes==3.3.2
-pytest==8.3.5
-pytest-cov==6.1.1
-pytest-django==4.11.1
-python-dateutil==2.9.0.post0
-python-dotenv==1.1.0
-pytz==2025.2
-six==1.17.0
-sqlparse==0.5.3
-tailwind==3.1.5b0
-typing_extensions==4.13.2
-tzdata==2025.2
-whitenoise==6.9.0

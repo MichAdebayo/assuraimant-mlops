@@ -57,25 +57,6 @@ class HomeView(TemplateView):
     template_name = "insurance_app/home.html"  # Home Page View Template
 
 
-class TestingView(TemplateView):
-    """Renders the testing page.
-
-    This view is responsible for rendering the 'base_final.html' template, likely used
-    for testing purposes or as part of the home page layout.
-
-    Attributes:
-        template_name (str): The name of the template used to display the response.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-
-    Returns:
-        HttpResponse: Renders the 'base_final.html' template.
-    """
-
-    template_name = "insurance_app/base_final.html"  # Home Page View Template
-
-
 class AboutView(TemplateView):
     """Renders the 'About Us' page.
 
