@@ -5,6 +5,7 @@ from insurance_app.models import ContactMessage, Job, Availability
 
 User = get_user_model()
 
+
 class SimpleTemplateViewsTest(TestCase):
     def setUp(self):
         """Sets up the test client for each test case.
@@ -58,6 +59,7 @@ class SimpleTemplateViewsTest(TestCase):
             resp = self.client.get(reverse(name))
             self.assertEqual(resp.status_code, 200)
             self.assertTemplateUsed(resp, template)
+
 
 class FunctionBasedViewsTest(TestCase):
     def setUp(self):
