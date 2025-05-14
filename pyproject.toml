@@ -15,3 +15,6 @@ exclude = '''
 [tool.isort]
 profile = "black"
 skip = [".venv", "migrations", ".vscode",".pytest_cache",".coverage"]
+
+[tool.setuptools]
+packages = { find = { where = ["src"] } }
