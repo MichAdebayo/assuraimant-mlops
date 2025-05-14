@@ -142,11 +142,20 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
           IMAGE_NAME: ghcr.io/${REPO_LC}/assuraimant-web-app
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           chmod +x ./src/ci_cd/shell/build_docker.sh
           ./src/ci_cd/shell/build_docker.sh $IMAGE_TAG
           echo "Starting to build docker image from the build_docker.sh file"
-
+        
+      - name: Debug Environment Variables
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}"
+          echo "REPO_LC=${REPO_LC}"
+          echo "IMAGE_TAG=${{ github.sha }}"
+          
       - name: Push Docker image to GitHub Container Registry
         run: |
           docker tag assuraimant-web-app:latest ghcr.io/${REPO_LC}/assuraimant-web-app:${{ github.sha }}

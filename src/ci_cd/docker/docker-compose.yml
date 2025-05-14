@@ -3,13 +3,16 @@ version: '3.8'
 services:
   web:
     image: ghcr.io/${GITHUB_REPOSITORY}:latest
-    command: ["/bin/bash", "-c", "./ci_cd/shell/docker/entrypoint.sh"]
-    ports:
-      - "8000:8000"
+    build:
+      context: .
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+        SECRET_KEY: ${SECRET_KEY}
     environment:
-      - DEBUG=1
       - DATABASE_URL=${DATABASE_URL}
       - SECRET_KEY=${SECRET_KEY}
+    ports:
+      - "8000:8000"
     depends_on:
       - db
 
