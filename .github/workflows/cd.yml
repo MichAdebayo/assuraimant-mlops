@@ -23,8 +23,8 @@ jobs:
 
       - name: Deploy to Render
         run: |
-          chmod +x ./src/ci_cd/scripts/deploy.sh
-          ./src/ci_cd/scripts/deploy.sh
+          chmod +x ./src/ci_cd/shell/deploy.sh
+          ./src/ci_cd/shell/deploy.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}

@@ -92,8 +92,8 @@ jobs:
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
         run: |
-          chmod +x ./src/ci_cd/scripts/run_test.sh
-          ./src/ci_cd/scripts/run_test.sh
+          chmod +x ./src/ci_cd/shell/run_test.sh
+          ./src/ci_cd/shell/run_test.sh
 
   build:
     runs-on: ubuntu-latest
@@ -118,8 +118,8 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           IMAGE_NAME: ghcr.io/${{ github.repository }}/assuraimant-web-app
         run: |
-          chmod +x ./src/ci_cd/scripts/build_docker.sh
-          ./src/ci_cd/scripts/build_docker.sh $IMAGE_TAG
+          chmod +x ./src/ci_cd/shell/build_docker.sh
+          ./src/ci_cd/shell/build_docker.sh $IMAGE_TAG
           echo "Starting to build docker image from the build_docker.sh file"
 
       - name: Push Docker image to GitHub Container Registry
