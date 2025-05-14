@@ -892,7 +892,7 @@ class PredictChargesView(LoginRequiredMixin, UpdateView):
         else:
             return "obese"
 
-    def categorize_age(self, age):
+    def categorize_age(self, age: int) -> str:
         if 18 < age < 26:
             return "young_adult"
         elif 26 <= age < 36:
