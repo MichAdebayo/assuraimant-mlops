@@ -29,7 +29,6 @@ class UserProfile(AbstractUser):
         __str__():
             Returns a string representation of the user profile, using the username field.
             Example: 'johndoe'
-
     Nested Enum-like Classes:
         SmokerType (TextChoices): Defines the choices for the smoker field ('Yes' or 'No').
         RegionType (TextChoices): Defines the choices for the region field ('Northeast', 'Northwest', 'Southeast', 'Southwest').
@@ -96,7 +95,8 @@ class UserProfile(AbstractUser):
 
 
 class PredictionHistory(models.Model):
-    """Represents a record of an insurance prediction for a user.
+    """
+    Represents a record of an insurance prediction for a user.
 
     This model stores the details of a user's historical insurance prediction,
     including the user's personal information at the time of the prediction and
@@ -121,7 +121,6 @@ class PredictionHistory(models.Model):
         __str__():
             Returns a string representation of the prediction, showing the user and timestamp.
             Example: 'John Doe prediction @ 2025-02-01'
-
     Meta:
         ordering (list): Orders predictions by timestamp in descending order.
         verbose_name (str): The singular name for the prediction record.
@@ -248,7 +247,6 @@ class Job(models.Model):
     Returns:
         str: The title of the job position as a string.
     """
-
     title = models.CharField(max_length=255)
     description = models.TextField()
     location = models.CharField(max_length=100, default="Remote")
@@ -285,7 +283,6 @@ class ContactMessage(models.Model):
     Returns:
         str: A string representing the contact message in a readable format.
     """
-
     name = models.CharField(max_length=255)
     email = models.EmailField()
     message = models.TextField()
@@ -353,7 +350,6 @@ class Appointment(models.Model):
     Returns:
         str: A string that represents the appointment in a readable format.
     """
-
     REASON_CHOICES = [
         ("Consultation", "Consultation"),
         ("Insurance Claim", "Insurance Claim"),
