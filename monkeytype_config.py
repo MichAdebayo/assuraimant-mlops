@@ -8,4 +8,3 @@ class Config(DefaultConfig):
 
     # Optional: control output formatting
     formatter = 'black'
-
