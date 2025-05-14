@@ -7,13 +7,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('insurance_app', '0003_remove_appointment_datetime_appointment_date_and_more'),
+        ("insurance_app", "0003_remove_appointment_datetime_appointment_date_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='appointment',
-            name='date',
+            model_name="appointment",
+            name="date",
             field=models.DateField(default=datetime.date(2025, 2, 3)),
         ),
     ]

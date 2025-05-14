@@ -247,6 +247,7 @@ class Job(models.Model):
     Returns:
         str: The title of the job position as a string.
     """
+
     title = models.CharField(max_length=255)
     description = models.TextField()
     location = models.CharField(max_length=100, default="Remote")
@@ -283,6 +284,7 @@ class ContactMessage(models.Model):
     Returns:
         str: A string representing the contact message in a readable format.
     """
+
     name = models.CharField(max_length=255)
     email = models.EmailField()
     message = models.TextField()
@@ -350,6 +352,7 @@ class Appointment(models.Model):
     Returns:
         str: A string that represents the appointment in a readable format.
     """
+
     REASON_CHOICES = [
         ("Consultation", "Consultation"),
         ("Insurance Claim", "Insurance Claim"),

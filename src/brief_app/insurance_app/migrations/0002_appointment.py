@@ -8,17 +8,41 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('insurance_app', '0001_initial'),
+        ("insurance_app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Appointment',
+            name="Appointment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('datetime', models.DateTimeField(unique=True)),
-                ('reason', models.CharField(choices=[('Consultation', 'Consultation'), ('Insurance Claim', 'Insurance Claim'), ('Policy Inquiry', 'Policy Inquiry')], max_length=50)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("datetime", models.DateTimeField(unique=True)),
+                (
+                    "reason",
+                    models.CharField(
+                        choices=[
+                            ("Consultation", "Consultation"),
+                            ("Insurance Claim", "Insurance Claim"),
+                            ("Policy Inquiry", "Policy Inquiry"),
+                        ],
+                        max_length=50,
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

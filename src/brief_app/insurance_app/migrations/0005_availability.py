@@ -6,16 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('insurance_app', '0004_alter_appointment_date'),
+        ("insurance_app", "0004_alter_appointment_date"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Availability',
+            name="Availability",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(unique=True)),
-                ('time_slots', models.JSONField(default=list)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField(unique=True)),
+                ("time_slots", models.JSONField(default=list)),
             ],
         ),
     ]

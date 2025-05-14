@@ -160,6 +160,7 @@ class ApplicationForm(forms.ModelForm):
         resume: The applicant's resume file (optional).
         cover_letter: The applicant's cover letter.
     """
+
     class Meta:
         model = JobApplication  # This will be the model for storing application data
         fields = ["name", "email", "resume", "cover_letter"]
