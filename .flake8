@@ -1,7 +1,7 @@
 # .flake8
 [flake8]
 max-line-length = 88
-exclude = .venv,__pycache__,migrations,.vscode,.pytest_cache,.coverage
+exclude = .venv/,__pycache__,migrations/,.vscode,.pytest_cache,.coverage
 ignore = E203, 
         W503, 
         E501,
