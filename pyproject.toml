@@ -3,12 +3,12 @@
 line-length = 88
 exclude = '''
 /(
-    \.venv
-  | migrations
-  | __pycache__
-  | .vscode
-  | .pytest_cache
-  | .coverage
+    \.venv/
+  | migrations/
+  | __pycache__/
+  | \.vscode/
+  | \.pytest_cache/
+  | \.coverage
 )/
 '''
 
