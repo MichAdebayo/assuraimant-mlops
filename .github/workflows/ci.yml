@@ -135,7 +135,8 @@ jobs:
         run: docker-compose --version
       
       - name: Set lowercase repository name
-        run: echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+        run: 
+          echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
           echo "Successfully converted repository name to lowercase"
 
       - name: Build Docker image
@@ -155,7 +156,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}"
           echo "REPO_LC=${REPO_LC}"
           echo "IMAGE_TAG=${{ github.sha }}"
-          
+
       - name: Push Docker image to GitHub Container Registry
         run: |
           docker tag assuraimant-web-app:latest ghcr.io/${REPO_LC}/assuraimant-web-app:${{ github.sha }}
