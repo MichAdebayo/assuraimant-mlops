@@ -8,7 +8,7 @@ from insurance_app.forms import (
     ChangePasswordForm,
     AppointmentForm,
 )
-from insurance_app.models import UserProfile, JobApplication, Appointment
+from insurance_app.models import UserProfile
 
 # Use the custom user model for all user creation
 from django.contrib.auth import get_user_model
@@ -145,9 +145,6 @@ class ChangePasswordFormTest(TestCase):
 
 class AppointmentFormTest(TestCase):
     def test_valid_data(self):
-        user = UserProfile.objects.create_user(
-            username="testuser", password="testpass123"
-        )
         form = AppointmentForm(
             data={
                 "reason": "Consultation",

@@ -1,8 +1,6 @@
 from django.contrib import admin
 from .models import UserProfile, Job, ContactMessage, Availability
 from django import forms
-from django.utils.translation import gettext_lazy as _
-from django.contrib import admin
 from .models import Appointment
 
 # Register your models here.
@@ -11,8 +9,7 @@ admin.site.register(UserProfile)
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
-    """
-    Admin configuration for the Job model in the Django admin interface.
+    """Admin configuration for the Job model in the Django admin interface.
 
     This class customizes how the `Job` model is displayed and managed in the
     Django admin panel. It defines which fields should be displayed in the
@@ -38,8 +35,7 @@ class JobAdmin(admin.ModelAdmin):
 
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    """
-    Admin configuration for the ContactMessage model in the Django admin interface.
+    """Admin configuration for the ContactMessage model in the Django admin interface.
 
     This class customizes how the `ContactMessage` model is displayed and
     managed in the Django admin panel. It defines which fields should be
@@ -70,8 +66,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
 
 
 class AvailabilityAdminForm(forms.ModelForm):
-    """
-    Form for managing availability data in the Django admin interface.
+    """Form for managing availability data in the Django admin interface.
 
     This form is used to manage the availability of time slots for specific dates
     within the Django admin interface. The form includes multiple time slots that
@@ -105,8 +100,7 @@ class AvailabilityAdminForm(forms.ModelForm):
         fields = ["date", "time_slots"]
 
     def clean_time_slots(self):
-        """
-        Ensures the selected time slots are returned as a list.
+        """Ensures the selected time slots are returned as a list.
 
         This method validates the time slots selected by the admin user and
         ensures that they are returned in a consistent list format.
@@ -118,8 +112,7 @@ class AvailabilityAdminForm(forms.ModelForm):
 
 
 class AvailabilityAdmin(admin.ModelAdmin):
-    """
-    Admin interface configuration for the Availability model.
+    """Admin interface configuration for the Availability model.
 
     This class customizes the admin interface for the Availability model to manage
     the availability of time slots for specific dates. It uses a custom form for
@@ -145,8 +138,7 @@ class AvailabilityAdmin(admin.ModelAdmin):
     list_display = ["date", "display_times"]
 
     def display_times(self, obj):
-        """
-        Formats the selected time slots as a comma-separated string.
+        """Formats the selected time slots as a comma-separated string.
 
         This method is used to display the selected time slots for each availability
         entry in the admin list view.
@@ -164,8 +156,7 @@ admin.site.register(Availability, AvailabilityAdmin)
 
 
 class AppointmentAdmin(admin.ModelAdmin):
-    """
-    Admin interface configuration for the Appointment model.
+    """Admin interface configuration for the Appointment model.
 
     This class customizes the Django admin interface for managing appointments,
     offering a user-friendly way to view, filter, search, and organize appointment data.
@@ -201,8 +192,7 @@ class AppointmentAdmin(admin.ModelAdmin):
     ordering = ("-date",)
 
     def formfield_for_choice_field(self, db_field, request, **kwargs):
-        """
-        Customizes the choices for the time field.
+        """Customizes the choices for the time field.
 
         This method is used to provide predefined time slots from 09:00 to 18:00
         for the "time" field in the appointment form.

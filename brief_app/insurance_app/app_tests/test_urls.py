@@ -15,7 +15,6 @@ from insurance_app.views import (
     apply,
     contact_view,
     contact_view_user,
-    ApplyView,
     HealthAdvicesView,
     CybersecurityAwarenessView,
     message_list_view,

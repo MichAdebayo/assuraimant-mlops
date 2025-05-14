@@ -39,8 +39,7 @@ from django.utils import timezone
 
 
 class HomeView(TemplateView):
-    """
-    Renders the homepage.
+    """Renders the homepage.
 
     This view is responsible for rendering the 'home.html' template, which serves as the
     homepage for the application.
@@ -59,8 +58,7 @@ class HomeView(TemplateView):
 
 
 class TestingView(TemplateView):
-    """
-    Renders the testing page.
+    """Renders the testing page.
 
     This view is responsible for rendering the 'base_final.html' template, likely used
     for testing purposes or as part of the home page layout.
@@ -79,8 +77,7 @@ class TestingView(TemplateView):
 
 
 class AboutView(TemplateView):
-    """
-    Renders the 'About Us' page.
+    """Renders the 'About Us' page.
 
     This view is responsible for rendering the 'about.html' template, which provides
     information about the application.
@@ -99,8 +96,7 @@ class AboutView(TemplateView):
 
 
 class JoinUsView(TemplateView):
-    """
-    Displays the 'Join Us' page with a list of job openings.
+    """Displays the 'Join Us' page with a list of job openings.
 
     This view retrieves all available job listings from the database and renders them
     in the 'join_us.html' template. The jobs are passed to the template context for display.
@@ -130,8 +126,7 @@ class JoinUsView(TemplateView):
 
 
 class ApplyView(TemplateView):
-    """
-    Handles job application submissions and displays a thank-you page.
+    """Handles job application submissions and displays a thank-you page.
 
     This view renders a template for submitting job applications and processes form submissions
     via POST requests. If the submitted form is valid, the application is saved, and the user
@@ -171,8 +166,7 @@ class ApplyView(TemplateView):
 
 
 def apply(request):
-    """
-    Handles job application submissions.
+    """Handles job application submissions.
 
     This view processes POST requests to collect applicant details, including name, email,
     job ID, and resume. If the form is submitted successfully, a confirmation message is
@@ -187,10 +181,10 @@ def apply(request):
             - If GET or other methods: Redirects to the 'join_us' page.
     """
     if request.method == "POST":
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        job_id = request.POST.get("job_id")
-        resume = request.FILES.get("resume")
+        request.POST.get("name")
+        request.POST.get("email")
+        request.POST.get("job_id")
+        request.FILES.get("resume")
 
         return HttpResponse("Application submitted successfully!")
 
@@ -229,8 +223,7 @@ class WelcomeView(TemplateView):
 
 # To handle non-client messages submission
 def contact_view(request):
-    """
-    Handles the contact form submission and displays the contact form.
+    """Handles the contact form submission and displays the contact form.
 
     This view processes POST requests to capture user input (name, email, and message),
     saves the message in the database, and displays a success message before redirecting
@@ -263,8 +256,8 @@ def contact_view(request):
 
 # To handle client messages submission
 def contact_view_user(request):
-    """
-    Handles the contact form submission and displays the contact form for loggedin users.
+    """Handles the contact form submission and displays the contact form for loggedin
+    users.
 
     This view processes POST requests to capture user input (name, email, and message),
     saves the message in the database, and displays a success message before redirecting
@@ -297,8 +290,7 @@ def contact_view_user(request):
 
 @staff_member_required
 def message_list_view(request):
-    """
-    Displays a list of contact messages for staff members.
+    """Displays a list of contact messages for staff members.
 
     This view retrieves all contact messages from the database, orders them by submission
     time in descending order (most recent first), and renders them in a template.
@@ -319,8 +311,7 @@ def message_list_view(request):
 
 @csrf_exempt
 def solve_message(request, message_id):
-    """
-    Handles the deletion of a contact message.
+    """Handles the deletion of a contact message.
 
     This view processes a POST request to delete a specific contact message by its ID.
     If the message exists, it is deleted, and a success response is returned.
@@ -352,8 +343,7 @@ def solve_message(request, message_id):
 
 
 def predict_charges(request):
-    """
-    Predicts insurance charges based on user input.
+    """Predicts insurance charges based on user input.
 
     This view handles both GET and POST requests:
     - GET: Renders the insurance form.
@@ -438,8 +428,7 @@ def predict_charges(request):
 
 @login_required
 def book_appointment(request):
-    """
-    Handles appointment booking for authenticated users.
+    """Handles appointment booking for authenticated users.
 
     This view allows users to book an appointment using an appointment form.
     It also displays the user's upcoming and past appointments.
@@ -502,8 +491,7 @@ def book_appointment(request):
 
 
 def get_available_times(request):
-    """
-    Retrieves available time slots for a given date.
+    """Retrieves available time slots for a given date.
 
     This function handles a GET request with a 'date' parameter and returns
     the available time slots for that date in JSON format. If no availability
@@ -529,8 +517,7 @@ def get_available_times(request):
 
 
 class SignupView(CreateView):
-    """
-    View for handling user sign-up using Django's generic CreateView.
+    """View for handling user sign-up using Django's generic CreateView.
 
     This view allows users to register by filling out a sign-up form.
     Upon successful registration, users are redirected to the login page.
@@ -549,8 +536,7 @@ class SignupView(CreateView):
 
 
 class CustomLoginView(LoginView):
-    """
-    Custom login view extending Django's built-in LoginView.
+    """Custom login view extending Django's built-in LoginView.
 
     Attributes:
         template_name (str): The path to the login template.
@@ -573,8 +559,7 @@ class CustomLoginView(LoginView):
     redirect_authenticated_user = True
 
     def get_success_url(self):
-        """
-        Returns the URL to redirect to after a successful login.
+        """Returns the URL to redirect to after a successful login.
 
         Returns:
             str: The reverse_lazy URL of the 'welcome' page.
@@ -582,8 +567,8 @@ class CustomLoginView(LoginView):
         return reverse_lazy("welcome")
 
     def dispatch(self, request, *args, **kwargs):
-        """
-        Overrides dispatch method to redirect authenticated users to the profile page.
+        """Overrides dispatch method to redirect authenticated users to the profile
+        page.
 
         Args:
             request (HttpRequest): The HTTP request object.
@@ -598,8 +583,7 @@ class CustomLoginView(LoginView):
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        """
-        Handles session expiration based on the 'remember me' checkbox.
+        """Handles session expiration based on the 'remember me' checkbox.
 
         If 'remember me' is checked, the session lasts for 2 weeks (1209600 seconds).
         Otherwise, the session expires when the browser is closed.
@@ -621,8 +605,7 @@ class CustomLoginView(LoginView):
 
 
 class UserProfileView(LoginRequiredMixin, UpdateView):
-    """
-    A view for authenticated users to update their own profile information.
+    """A view for authenticated users to update their own profile information.
 
     This class-based view handles user profile updates by combining Django's
     LoginRequiredMixin with UpdateView functionality. It ensures only authenticated
@@ -681,8 +664,7 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
 
 
 class ChangePasswordView(PasswordChangeView):
-    """
-    Handles password change requests.
+    """Handles password change requests.
 
     This view allows users to change their password. If the form is valid, it saves the new
     password, displays a success message, and redirects the user to their profile page.
@@ -718,8 +700,7 @@ class ChangePasswordView(PasswordChangeView):
 
 
 class UserLogoutView(LoginRequiredMixin, View):
-    """
-    Handles user logout requests with a confirmation step.
+    """Handles user logout requests with a confirmation step.
 
     This view provides a confirmation page for users who want to log out, and handles
     the actual logout process when the user submits the request.
@@ -760,8 +741,8 @@ class UserLogoutView(LoginRequiredMixin, View):
 
 
 class PredictChargesView(LoginRequiredMixin, UpdateView):
-    """
-    Allows users to update their profile and predicts insurance charges based on input.
+    """Allows users to update their profile and predicts insurance charges based on
+    input.
 
     This view allows logged-in users to update their profile information, such as age,
     height, weight, number of children, and smoking status. Upon successful form submission,
@@ -962,8 +943,7 @@ class PredictChargesView(LoginRequiredMixin, UpdateView):
 
 
 class PredictionHistoryView(LoginRequiredMixin, ListView):
-    """
-    Displays a list of prediction history for a logged-in user.
+    """Displays a list of prediction history for a logged-in user.
 
     This view allows logged-in users to view their past insurance charge predictions,
     including the predicted charges and related details. The list is paginated, and users

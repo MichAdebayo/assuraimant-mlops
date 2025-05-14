@@ -8,8 +8,7 @@ from django.forms import DateInput
 
 
 class PredictChargesForm(forms.ModelForm):
-    """
-    Form for predicting insurance charges based on user profile information.
+    """Form for predicting insurance charges based on user profile information.
 
     This form allows users to input their personal details, such as age,
     height, weight, number of children, and smoking status, in order to
@@ -33,7 +32,6 @@ class PredictChargesForm(forms.ModelForm):
             Validates the number of children field to ensure it's a non-negative value.
         clean_smoker():
             Validates the smoker field to ensure it contains a valid choice.
-
     """
 
     class Meta:
@@ -42,8 +40,7 @@ class PredictChargesForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-    """
-    Form for updating user profile information, based on the UserProfile model.
+    """Form for updating user profile information, based on the UserProfile model.
 
     This form is used to update various details of a user's profile, including
     personal information like name, username, email, as well as health-related
@@ -88,8 +85,7 @@ class UserProfileForm(forms.ModelForm):
 
 
 class UserSignupForm(forms.ModelForm):
-    """
-    Form for user signup, based on the UserProfile model.
+    """Form for user signup, based on the UserProfile model.
 
     This form is used for creating a new user. It includes fields for the username,
     email, and password. The password field uses a password input widget to hide
@@ -129,8 +125,7 @@ class UserSignupForm(forms.ModelForm):
 
 
 class UserLoginForm(forms.Form):
-    """
-    Form for user login.
+    """Form for user login.
 
     This form is used to authenticate users by collecting their username and
     password. It is not based on a model but rather provides fields for the user
@@ -152,8 +147,7 @@ class UserLoginForm(forms.Form):
 
 
 class ApplicationForm(forms.ModelForm):
-    """
-    Form for submitting a job application.
+    """Form for submitting a job application.
 
     This form is used for candidates to apply for a job by providing their name,
     email, resume, and cover letter. The resume is optional, while the name, email,
@@ -178,8 +172,7 @@ class ApplicationForm(forms.ModelForm):
 
 
 class ChangePasswordForm(PasswordChangeForm):
-    """
-    Form for changing the user's password.
+    """Form for changing the user's password.
 
     This form allows the user to update their password by entering their current
     password and providing a new password (and confirming it). The form includes
@@ -194,12 +187,11 @@ class ChangePasswordForm(PasswordChangeForm):
     """
 
     def __init__(self, *args, **kwargs):
-        """
-        Initializes the ChangePasswordForm with custom labels, help text, and styles.
+        """Initializes the ChangePasswordForm with custom labels, help text, and styles.
 
-        Customizes the labels of the password fields, adds helpful text to
-        guide users on password requirements, and applies Tailwind CSS styles
-        to the form fields for consistent styling.
+        Customizes the labels of the password fields, adds helpful text to guide users
+        on password requirements, and applies Tailwind CSS styles to the form fields for
+        consistent styling.
         """
         super().__init__(*args, **kwargs)
 
@@ -227,8 +219,7 @@ class ChangePasswordForm(PasswordChangeForm):
 
 
 class AppointmentForm(forms.ModelForm):
-    """
-    Form for creating or updating an appointment.
+    """Form for creating or updating an appointment.
 
     This form allows users to select a reason for the appointment, specify the
     date, and choose a time. It includes validation for the time field to ensure
@@ -254,8 +245,7 @@ class AppointmentForm(forms.ModelForm):
         }
 
     def clean_time(self):
-        """
-        Validates the time field to ensure it follows the HH:MM format.
+        """Validates the time field to ensure it follows the HH:MM format.
 
         Checks if the time entered is not empty and adheres to a valid 24-hour
         clock format. Raises a validation error if the time is invalid.
@@ -273,6 +263,6 @@ class AppointmentForm(forms.ModelForm):
             hour, minute = map(int, time.split(":"))
             if not (0 <= hour < 24 and 0 <= minute < 60):
                 raise forms.ValidationError("Enter a valid time in HH:MM format.")
-        except ValueError:
-            raise forms.ValidationError("Time should be in HH:MM format.")
+        except ValueError as e:
+            raise forms.ValidationError("Time should be in HH:MM format.") from e
         return time

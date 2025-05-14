@@ -5,9 +5,8 @@ from datetime import date
 
 
 class UserProfile(AbstractUser):
-    """
-    Extends the default Django user model to include additional personal
-    information for users, including physical attributes and lifestyle choices.
+    """Extends the default Django user model to include additional personal information
+    for users, including physical attributes and lifestyle choices.
 
     This model includes fields for the user's age, weight, height, number of
     children, smoking status, region, and sex. It also provides a BMI calculation
@@ -87,7 +86,7 @@ class UserProfile(AbstractUser):
     # Calculated Property
     @property
     def bmi(self):
-        """Calculate BMI safely with zero division protection"""
+        """Calculate BMI safely with zero division protection."""
         if self.height <= 0:
             return 0.0
         return round(self.weight / ((self.height / 100) ** 2), 1)
@@ -97,8 +96,7 @@ class UserProfile(AbstractUser):
 
 
 class PredictionHistory(models.Model):
-    """
-    Represents a record of an insurance prediction for a user.
+    """Represents a record of an insurance prediction for a user.
 
     This model stores the details of a user's historical insurance prediction,
     including the user's personal information at the time of the prediction and
@@ -176,7 +174,7 @@ class PredictionHistory(models.Model):
     # Derived Field
     @property
     def bmi(self):
-        """Preserve historical BMI calculation"""
+        """Preserve historical BMI calculation."""
         if self.height <= 0:
             return 0.0
         return round(self.weight / ((self.height / 100) ** 2), 1)
@@ -187,8 +185,7 @@ class PredictionHistory(models.Model):
 
 # For the join us job application form
 class JobApplication(models.Model):
-    """
-    Represents a job application submitted by a candidate.
+    """Represents a job application submitted by a candidate.
 
     This model stores the details of a candidate’s application for a job, including their name,
     email address, uploaded resume, and cover letter.
@@ -224,8 +221,7 @@ class JobApplication(models.Model):
 
 
 class Job(models.Model):
-    """
-    Represents a job listing in the application.
+    """Represents a job listing in the application.
 
     This model stores information about a specific job position, including its title, description,
     location, experience requirements, and a unique job ID.
@@ -264,8 +260,7 @@ class Job(models.Model):
 
 
 class ContactMessage(models.Model):
-    """
-    Represents a contact message submitted by a user.
+    """Represents a contact message submitted by a user.
 
     This model stores information about a contact message, including the sender's name, email,
     the content of the message, and the timestamp when the message was submitted.
@@ -301,8 +296,7 @@ class ContactMessage(models.Model):
 
 
 class Availability(models.Model):
-    """
-    Represents the availability of time slots for a specific date.
+    """Represents the availability of time slots for a specific date.
 
     This model stores the available time slots for a given date, where each date has a
     list of available times. The time slots are stored as a JSON field for flexibility,
@@ -333,8 +327,7 @@ class Availability(models.Model):
 
 
 class Appointment(models.Model):
-    """
-    Represents an appointment made by a user.
+    """Represents an appointment made by a user.
 
     This model stores the details of an appointment, including the user who made the appointment,
     the reason for the appointment, the date and time of the appointment, and the reason for the appointment.

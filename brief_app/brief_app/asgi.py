@@ -1,5 +1,4 @@
-"""
-ASGI config for brief_app project.
+"""ASGI config for brief_app project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
