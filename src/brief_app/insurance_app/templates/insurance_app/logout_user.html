@@ -1,0 +1,30 @@
+{% extends 'insurance_app/base_final.html' %}
+
+{% block content %}
+<main class="flex-1 flex items-center justify-center pt-20 pb-20">  <!-- Increased pb-20 for footer space -->
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-md w-full text-center mx-4">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+            Hi {{ user.first_name }},
+        </h2>
+        <p class="text-gray-600 text-lg mb-8">
+            You have been successfully logged out.
+        </p>
+
+        <div class="flex flex-col space-y-4">
+            <a href="{% url 'login' %}" 
+               class="bg-[#026f4e] hover:bg-[#ed1c24] text-white font-medium py-3 px-6 rounded-lg 
+                      transition-all duration-200 transform hover:-translate-y-1 shadow-md
+                      hover:shadow-lg">
+                Login Again
+            </a>
+            
+            <a href="{% url 'home' %}" 
+               class="bg-[#026f4e] hover:bg-[#ed1c24] text-white font-medium py-3 px-6 rounded-lg 
+                      transition-all duration-200 transform hover:-translate-y-1 shadow-md
+                      hover:shadow-lg">
+                Return to Home
+            </a>
+        </div>
+    </div>
+</main>
+{% endblock %}
