@@ -9,7 +9,7 @@ echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 
 # Pull the Docker image from GHCR
 echo "Pulling Docker image from GitHub Container Registry..."
-docker pull ghcr.io/${REPO_LC}:latest
+docker pull ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}
 
 # Deploy to Render
 echo "Deploying Docker image to Render..."
