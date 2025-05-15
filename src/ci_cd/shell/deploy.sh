@@ -23,7 +23,7 @@ curl -X POST https://api.render.com/v1/services \
   -H "Content-Type: application/json" \
   -d '{
         "serviceName": "assuraimant-web-app",
-        "image": "ghcr.io/'${REPO_LC}':latest",
+        "image": "ghcr.io/'${REPO_LC}'/assuraimant-web-app:'"${IMAGE_TAG}"'",
         "env": "docker",
         "instanceCount": 1,
         "envVars": [
@@ -31,5 +31,8 @@ curl -X POST https://api.render.com/v1/services \
           {"key": "SECRET_KEY", "value": "'"$SECRET_KEY"'"}
         ]
       }'
+
+RESPONSE=$(curl -s -w "\n%{http_code}\n" -X POST ...)
+echo "$RESPONSE"
 
 echo "Deployment to Render completed!"
