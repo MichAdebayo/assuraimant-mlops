@@ -1,5 +1,5 @@
 # Use the official Python image as the base image
-FROM python:3.12-slim-buster@sha256:3c8a1f5b8e5a7b6e5c8f8b8e5a7b6e5c8f8b8e5a7b6e5c8f8b8e5a7b6e5c8f8b
+FROM python:3.12-slim
 
 # Set the working directory in the container
 WORKDIR /app
