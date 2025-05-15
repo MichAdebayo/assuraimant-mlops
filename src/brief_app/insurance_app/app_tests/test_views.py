@@ -4,8 +4,7 @@ from django.contrib.auth import get_user_model
 from insurance_app.models import ContactMessage, Job, Availability, PredictionHistory, Appointment
 import json
 from unittest.mock import patch
-import os
-from django.conf import settings
+
 
 User = get_user_model()
 
