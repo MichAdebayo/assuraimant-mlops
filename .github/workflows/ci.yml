@@ -159,7 +159,7 @@ jobs:
       - name: Push Docker image to GitHub Container Registry
         run: |
           echo "Using repo: $REPO_LC"
-          docker tag assuraimant-web-app:latest ghcr.io/$REPO_LC/assuraimant-web-app:${{ github.sha }}
+          # docker tag assuraimant-web-app:latest ghcr.io/$REPO_LC/assuraimant-web-app:${{ github.sha }} 
           docker push ghcr.io/$REPO_LC/assuraimant-web-app:${{ github.sha }}
           echo "✅ Docker image ghcr.io/$REPO_LC/assuraimant-web-app:${{ github.sha }} has been created and pushed to GHCR."
 
