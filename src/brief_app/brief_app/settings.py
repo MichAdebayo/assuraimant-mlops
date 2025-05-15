@@ -37,12 +37,10 @@ ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0", "*"]
 INSTALLED_APPS = [
     # Team App
     "insurance_app",
-
     # Others Django Apps
     "tailwind",
     "theme",
     # "django_browser_reload",
-
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -141,7 +139,7 @@ STATICFILES_DIRS = [
 ]
 
 # STATIC_ROOT = BASE_DIR / "insurance_app" / "staticfiles"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # WhiteNoise settings for serving static files efficiently
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
