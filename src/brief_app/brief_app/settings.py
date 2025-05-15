@@ -30,17 +30,19 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False") == "False"  # Convert the string to boolean
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0", "*"]
 
 # Application definition
 
 INSTALLED_APPS = [
     # Team App
     "insurance_app",
+
     # Others Django Apps
     "tailwind",
     "theme",
-    "django_browser_reload",
+    # "django_browser_reload",
+
     # Django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -55,6 +57,7 @@ TAILWIND_APP_NAME = "theme"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware", 
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -137,7 +140,11 @@ STATICFILES_DIRS = [
     BASE_DIR / "insurance_app" / "static",
 ]
 
-STATIC_ROOT = BASE_DIR / "insurance_app" / "staticfiles"
+# STATIC_ROOT = BASE_DIR / "insurance_app" / "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# WhiteNoise settings for serving static files efficiently
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 AUTH_USER_MODEL = "insurance_app.UserProfile"
 

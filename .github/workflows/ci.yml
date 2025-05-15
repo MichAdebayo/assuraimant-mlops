@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - develop
-      - continuous_integration
+      # - continuous_integration
   pull_request:
     branches:
       - main

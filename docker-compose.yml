@@ -1,24 +1,33 @@
-version: '3.8'
 
 services:
   web:
     build:
       context: .
       dockerfile: src/ci_cd/docker/Dockerfile
-    image: ghcr.io/michadebayo/assuraimant-web-app:${IMAGE_TAG}
+    image: assuraimant-web-app:latest
+    # image: ghcr.io/michadebayo/assuraimant-web-app:${IMAGE_TAG:-latest}
     ports:
       - "8000:8000"
+    # dns:
+    # - 8.8.8.8
     environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - SECRET_KEY=${SECRET_KEY}
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/app_db
+      - SECRET_KEY=django-insecure-!9p0uxi*8#9rbs5xrlz1_8-4h@h5$$tpwv(_b5&z@8+8ga42irb
+      # - DATABASE_URL=${DATABASE_URL}
+      # - SECRET_KEY=${SECRET_KEY}
     depends_on:
       - db
 
   db:
-    image: postgres:13
+    image: postgres:latest
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: app_db
     ports:
       - "5432:5432"
+    healthcheck:  
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
