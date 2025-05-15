@@ -15,9 +15,6 @@ jobs:
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # - name: Set lowercase repository name
-      #   run: echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
-
       - name: Deploy to Render
         run: |
           chmod +x ./src/ci_cd/shell/deploy.sh
