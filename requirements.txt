@@ -10,9 +10,10 @@ dotenv==0.9.9
 flake8==7.2.0
 gunicorn==23.0.0
 iniconfig==2.1.0
+joblib==1.5.0
 libcst==1.7.0
 mccabe==0.7.0
-# -e git+https://github.com/MichAdebayo/assuraimant-ci-cd/@c1cb95ccca0f81977239dd1f1ca66dfedb62833f#egg=mon_projet
+# -e git+https://github.com/MichAdebayo/assuraimant-ci-cd/@2c17bbffd38bc0baec794b4e1a00250457c4d144#egg=mon_projet
 MonkeyType==23.3.0
 mypy==1.15.0
 mypy_extensions==1.1.0
@@ -31,9 +32,12 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.1.0
 pytz==2025.2
 PyYAML==6.0.2
+scikit-learn==1.6.1
+scipy==1.15.3
 six==1.17.0
 sqlparse==0.5.3
 tailwind==3.1.5b0
+threadpoolctl==3.6.0
 typing_extensions==4.13.2
 tzdata==2025.2
 untokenize==0.1.1
