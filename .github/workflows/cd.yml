@@ -24,6 +24,9 @@ jobs:
         run: |
           echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
       - name: Deploy to Render
         env:
           REPO_LC: ${{ env.REPO_LC }}

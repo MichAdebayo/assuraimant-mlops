@@ -46,6 +46,8 @@ JSON_PAYLOAD=$(jq -n \
     ]
   }')
 
+echo "$JSON_PAYLOAD" | jq .
+
 RESPONSE=$(curl -s -w "\n%{http_code}" -X POST https://api.render.com/v1/services \
   -H "Authorization: Bearer $RENDER_API_TOKEN" \
   -H "Content-Type: application/json" \
