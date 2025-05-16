@@ -46,12 +46,13 @@ JSON_PAYLOAD=$(jq -n \
     ]
   }')
 
+echo "Generated JSON Payload:"
 echo "$JSON_PAYLOAD" | jq .
 
 RESPONSE=$(curl -s -w "\n%{http_code}" -X POST https://api.render.com/v1/services \
   -H "Authorization: Bearer $RENDER_API_TOKEN" \
   -H "Content-Type: application/json" \
-  -d "$JSON_PAYLOAD")
+  --data-binary "$JSON_PAYLOAD")
 
 # Split response and status code
 HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
