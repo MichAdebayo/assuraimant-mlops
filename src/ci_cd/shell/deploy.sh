@@ -7,17 +7,18 @@ set -e
 echo "Logging into GitHub Container Registry..."
 echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 
-# Validate required environment variables
-if [[ -z "$REPO_LC" || -z "$IMAGE_TAG" || -z "$RENDER_API_TOKEN" || -z "$DATABASE_URL" || -z "$SECRET_KEY" ]]; then
-  echo "❌ One or more required environment variables are not set. Exiting..."
-  exit 1
-fi
-
 # Debugging output
 echo "Using REPO_LC=${REPO_LC}"
 echo "Using IMAGE_TAG=${IMAGE_TAG}"
 echo "Using DATABASE_URL=${DATABASE_URL}"
 echo "Using SECRET_KEY=${SECRET_KEY}"
+echo "Using RENDER_API_TOKEN: ${ secrets.RENDER_API_TOKEN }"
+
+# Validate required environment variables
+if [[ -z "$REPO_LC" || -z "$IMAGE_TAG" || -z "$RENDER_API_TOKEN" || -z "$DATABASE_URL" || -z "$SECRET_KEY" ]]; then
+  echo "❌ One or more required environment variables are not set. Exiting..."
+  exit 1
+fi
 
 # Pull the Docker image from GHCR
 echo "Pulling Docker image from GitHub Container Registry..."
