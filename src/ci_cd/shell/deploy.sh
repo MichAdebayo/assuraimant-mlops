@@ -16,7 +16,7 @@ echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 # echo "GITHUB_ACTOR is: $GITHUB_ACTOR"
 
 # Validate required environment variables
-if [[ -z "$REPO_LC" || -z "$IMAGE_TAG" || -z "$RENDER_API_TOKEN" || -z "$DATABASE_URL" || -z "$SECRET_KEY" ]]; then
+if [[ -z "$REPO_LC" || -z "$IMAGE_TAG" || -z "$RENDER_API_TOKEN" ]]; then
   echo "❌ One or more required environment variables are not set. Exiting..."
   exit 1
 fi
@@ -28,31 +28,22 @@ docker pull ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}
 # Deploy to Render
 echo "Deploying Docker image to Render..."
 
-JSON_PAYLOAD=$(jq -n \
-  --arg serviceName "assuraimant-web-app" \
+# Enter service ID from the Render dashboard
+SERVICE_ID="srv-d0jgfjemcj7s73801ik0"
+
+DEPLOY_PAYLOAD=$(jq -n \
   --arg image "ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}" \
-  --arg env "docker" \
-  --argjson instanceCount 1 \
-  --arg db_url "$DATABASE_URL" \
-  --arg secret "$SECRET_KEY" \
   '{
-    serviceName: $serviceName,
-    image: $image,
-    env: $env,
-    instanceCount: $instanceCount,
-    envVars: [
-      { key: "DATABASE_URL", value: $db_url },
-      { key: "SECRET_KEY", value: $secret }
-    ]
+    image: $image
   }')
 
 echo "Generated JSON Payload:"
-echo "$JSON_PAYLOAD" | jq .
+echo "$DEPLOY_PAYLOAD" | jq .
 
-RESPONSE=$(curl -s -w "\n%{http_code}" -X POST https://api.render.com/v1/services \
+RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
   -H "Authorization: Bearer $RENDER_API_TOKEN" \
   -H "Content-Type: application/json" \
-  --data-binary "$JSON_PAYLOAD")
+  --data-binary "$DEPLOY_PAYLOAD")
 
 # Split response and status code
 HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
@@ -61,7 +52,6 @@ RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
 if [[ "$HTTP_STATUS" != "200" && "$HTTP_STATUS" != "201" ]]; then
   echo "❌ Deployment failed with status code $HTTP_STATUS"
   echo "Response: $RESPONSE_BODY"
+  echo "✅ Deployment to Render completed successfully!"
   exit 1
 fi
-
-echo "✅ Deployment to Render completed successfully!"

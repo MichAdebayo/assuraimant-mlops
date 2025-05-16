@@ -5,10 +5,6 @@ on:
     secrets:
       RENDER_API_TOKEN:
         required: true
-      DATABASE_URL:
-        required: true
-      SECRET_KEY:
-        required: true
       IMAGE_TAG:
         required: true
 
@@ -32,8 +28,6 @@ jobs:
           REPO_LC: ${{ env.REPO_LC }}
           IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
           RENDER_API_TOKEN: ${{ secrets.RENDER_API_TOKEN }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
         run: |
