@@ -29,7 +29,7 @@ jobs:
           IMAGE_TAG: ${{ secrets.IMAGE_TAG }}
           RENDER_API_TOKEN: ${{ secrets.RENDER_API_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
           chmod +x ./src/ci_cd/shell/deploy.sh
           ./src/ci_cd/shell/deploy.sh

@@ -1,14 +1,16 @@
+# services:
+#   web:
+#     build:
+#       context: .
+#       dockerfile: src/ci_cd/docker/Dockerfile
+#       args:
+#         COMMIT_SHA: ${GITHUB_SHA}
+#         BUILD_TIME: ${BUILD_TIME}
+#     image: ghcr.io/michadebayo/assuraimant-web-app:${IMAGE_TAG}
+#     ports:
+#       - "8000:8000"
 
-services:
-  web:
-    build:
-      context: .
-      dockerfile: src/ci_cd/docker/Dockerfile
-    image: ghcr.io/michadebayo/assuraimant-web-app:${IMAGE_TAG}
-    ports:
-      - "8000:8000"
+#     environment:
+#       - DATABASE_URL=${DATABASE_URL}
+#       - SECRET_KEY=${SECRET_KEY}
 
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - SECRET_KEY=${SECRET_KEY}
-      

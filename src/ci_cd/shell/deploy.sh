@@ -23,6 +23,8 @@ docker pull "$IMAGE"
 
 # Deploy to Render
 echo "🚀 Deploying Docker image to Render..."
+echo "Deploying image: $IMAGE"
+docker inspect "$IMAGE" --format='Image ID: {{.Id}}'
 
 # Replace with your actual Render service ID
 SERVICE_ID="srv-d0jgfjemcj7s73801ik0"
@@ -39,14 +41,14 @@ echo "🧾 Generated JSON Payload:"
 echo "$DEPLOY_PAYLOAD" | jq .
 
 # Send deploy request to Render
-RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
+RESPONSE=$(curl -v -s -w "\n%{http_code}" "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
   -H "Authorization: Bearer $RENDER_API_TOKEN" \
   -H "Content-Type: application/json" \
-  --data-binary "$DEPLOY_PAYLOAD")
+  --data-binary "$DEPLOY_PAYLOAD" 2>&1)
 
 # Parse response and HTTP status
 HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
-RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
+RESPONSE_BODY=$(echo "$RESPONSE" | sed '$d')
 
 if [[ "$HTTP_STATUS" != "200" && "$HTTP_STATUS" != "201" && "$HTTP_STATUS" != "202" ]]; then
   echo "❌ Deployment failed with status code $HTTP_STATUS"
