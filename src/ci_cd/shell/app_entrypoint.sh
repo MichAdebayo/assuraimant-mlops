@@ -5,10 +5,16 @@ set -e
 GUNICORN_PORT=${GUNICORN_PORT:-8000}
 
 echo "Waiting for database to be ready..."
-until pg_isready -h db -p 5432 -U postgres; do
+until python manage.py showmigrations &>/dev/null; do
   echo "Database not ready, retrying in 3s..."
   sleep 3
 done
+
+# echo "Waiting for database to be ready..."
+# until pg_isready -h db -p 5432 -U postgres; do
+#   echo "Database not ready, retrying in 3s..."
+#   sleep 3
+# done
 
 echo "Database is ready. Running database migrations..."
 if ! python manage.py migrate; then
