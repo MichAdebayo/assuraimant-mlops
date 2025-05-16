@@ -127,11 +127,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-docker-compose
 
-      - name: Debug Docker Compose path
-        run: |
-          echo "Checking if Docker Compose binary exists..."
-          ls -la /usr/local/bin/docker-compose || echo "Docker Compose binary not found!"
-
       - name: Install Docker Compose (if not cached)
         run: |
           if ! [ -x "$(command -v docker-compose)" ]; then
@@ -141,9 +136,6 @@ jobs:
           else
             echo "Docker Compose is already cached."
           fi
-
-      - name: Verify Docker Compose Installation
-        run: docker-compose --version
       
       - name: Set lowercase repository name
         run: |
@@ -157,14 +149,6 @@ jobs:
           echo "Starting to build docker image from the build_docker.sh file"
           chmod +x ./src/ci_cd/shell/build_docker.sh
           ./src/ci_cd/shell/build_docker.sh "$IMAGE_TAG"
-
-      - name: Debug Environment Variables
-        run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}"
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}"
-          echo "REPO_LC=$REPO_LC"
-          echo "IMAGE_TAG=${{ github.sha }}"
-          echo "RENDER_API_TOKEN=${{ secrets.RENDER_API_TOKEN }}"
 
       - name: Push Docker image to GitHub Container Registry
         run: |
@@ -185,4 +169,3 @@ jobs:
       RENDER_API_TOKEN: ${{ secrets.RENDER_API_TOKEN }}
       IMAGE_TAG: ${{ github.sha }}
       
-    
