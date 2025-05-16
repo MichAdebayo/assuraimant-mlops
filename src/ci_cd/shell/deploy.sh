@@ -13,7 +13,6 @@ echo "Using IMAGE_TAG=${IMAGE_TAG}"
 echo "Using DATABASE_URL=${DATABASE_URL}"
 echo "Using SECRET_KEY=${SECRET_KEY}"
 echo "Using RENDER_API_TOKEN: ${RENDER_API_TOKEN}"
-echo "GITHUB_TOKEN is set: ${#GITHUB_TOKEN}"
 echo "GITHUB_ACTOR is: $GITHUB_ACTOR"
 
 # Validate required environment variables
@@ -28,7 +27,7 @@ docker pull ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}
 
 # Deploy to Render
 echo "Deploying Docker image to Render..."
-RESPONSE=$(curl -s -o response_body.txt -w "%{http_code}" -X POST https://api.render.com/v1/services \
+RESPONSE=$(curl -s -w "\n%{http_code}" -X POST https://api.render.com/v1/services \
   -H "Authorization: Bearer $RENDER_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -42,10 +41,12 @@ RESPONSE=$(curl -s -o response_body.txt -w "%{http_code}" -X POST https://api.re
         ]
       }')
 
-HTTP_STATUS=$(cat response_body.txt | tail -n 1)
-RESPONSE_BODY=$(cat response_body.txt | head -n -1)
+# Split response and status code
+HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
+RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
 
-if [[ "$HTTP_STATUS" -ne 200 ]]; then
+
+if [[ "$HTTP_STATUS" != "200" && "$HTTP_STATUS" != "201" ]]; then
   echo "❌ Deployment failed with status code $HTTP_STATUS"
   echo "Response: $RESPONSE_BODY"
   exit 1
