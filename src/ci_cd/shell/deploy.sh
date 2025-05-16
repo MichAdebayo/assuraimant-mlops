@@ -12,7 +12,7 @@ echo "Using REPO_LC=${REPO_LC}"
 echo "Using IMAGE_TAG=${IMAGE_TAG}"
 echo "Using DATABASE_URL=${DATABASE_URL}"
 echo "Using SECRET_KEY=${SECRET_KEY}"
-echo "Using RENDER_API_TOKEN: ${ secrets.RENDER_API_TOKEN }"
+echo "Using RENDER_API_TOKEN: ${RENDER_API_TOKEN}"
 
 # Validate required environment variables
 if [[ -z "$REPO_LC" || -z "$IMAGE_TAG" || -z "$RENDER_API_TOKEN" || -z "$DATABASE_URL" || -z "$SECRET_KEY" ]]; then

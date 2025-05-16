@@ -153,8 +153,6 @@ jobs:
       - name: Build Docker image
         env:
           IMAGE_TAG: ${{ github.sha }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           echo "Starting to build docker image from the build_docker.sh file"
           chmod +x ./src/ci_cd/shell/build_docker.sh
@@ -166,6 +164,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}"
           echo "REPO_LC=$REPO_LC"
           echo "IMAGE_TAG=${{ github.sha }}"
+          echo "RRENDER_API_TOKEN=${{ secrets.RENDER_API_TOKEN }}
 
       - name: Push Docker image to GitHub Container Registry
         run: |
@@ -182,4 +181,11 @@ jobs:
     name: Deploy on Render
     needs: build
     uses: ./.github/workflows/cd.yml
+    secrets: 
+      RENDER_API_TOKEN: ${{ secrets.RENDER_API_TOKEN }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      IMAGE_TAG: ${{ github.sha }}
+      GITHUB_ACTOR: ${{ github.actor }}
     
