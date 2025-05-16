@@ -21,9 +21,14 @@ from .forms import (
     PredictChargesForm,
     AppointmentForm,
 )
-from django.http import HttpResponse
+from django.http import (
+    HttpResponse,
+    HttpRequest,
+    JsonResponse,
+    HttpResponseBase,
+    HttpResponseRedirect,
+)
 import pickle
-from django.http import JsonResponse
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import logout, get_user_model
@@ -36,6 +41,16 @@ from django.views.generic import ListView
 from django.db.models import Avg
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from typing import Dict, List, Any, Optional, Union, Type, Tuple, cast
+from django.http.response import HttpResponseRedirect
+from django.forms import Form
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import AbstractUser, AnonymousUser, AbstractBaseUser
+from django.contrib import messages
+from typing import Union, cast
+
+
+User: Type[AbstractBaseUser] = get_user_model()
 
 
 class HomeView(TemplateView):
@@ -123,7 +138,7 @@ class JoinUsView(TemplateView):
 
     template_name = "insurance_app/join_us.html"  # Join Us View Template
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["jobs"] = Job.objects.all()
         return context
@@ -156,7 +171,7 @@ class ApplyView(TemplateView):
 
     template_name = "apply_thank_you.html"
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         # Handle form submission here
         if request.method == "POST":
             form = ApplicationForm(request.POST, request.FILES)
@@ -170,7 +185,7 @@ class ApplyView(TemplateView):
         return render(request, self.template_name, {"form": form})
 
 
-def apply(request):
+def apply(request: HttpRequest) -> HttpResponse:
     """
     Handles job application submissions.
 
@@ -228,7 +243,7 @@ class WelcomeView(TemplateView):
 
 
 # To handle non-client messages submission
-def contact_view(request):
+def contact_view(request: HttpRequest) -> HttpResponse:
     """
     Handles the contact form submission and displays the contact form.
 
@@ -262,7 +277,7 @@ def contact_view(request):
 
 
 # To handle client messages submission
-def contact_view_user(request):
+def contact_view_user(request: HttpRequest) -> HttpResponse:
     """
     Handles the contact form submission and displays the contact form for loggedin users.
 
@@ -296,7 +311,7 @@ def contact_view_user(request):
 
 
 @staff_member_required
-def message_list_view(request):
+def message_list_view(request: HttpRequest) -> HttpResponse:
     """
     Displays a list of contact messages for staff members.
 
@@ -318,7 +333,7 @@ def message_list_view(request):
 
 
 @csrf_exempt
-def solve_message(request, message_id):
+def solve_message(request: HttpRequest, message_id: int) -> JsonResponse:
     """
     Handles the deletion of a contact message.
 
@@ -351,7 +366,7 @@ def solve_message(request, message_id):
     )
 
 
-def predict_charges(request):
+def predict_charges(request: HttpRequest) -> Union[HttpResponse, JsonResponse]:
     """
     Predicts insurance charges based on user input.
 
@@ -437,7 +452,7 @@ def predict_charges(request):
 
 
 @login_required
-def book_appointment(request):
+def book_appointment(request: HttpRequest) -> HttpResponse:
     """
     Handles appointment booking for authenticated users.
 
@@ -501,7 +516,7 @@ def book_appointment(request):
     )
 
 
-def get_available_times(request):
+def get_available_times(request: HttpRequest) -> JsonResponse:
     """
     Retrieves available time slots for a given date.
 
@@ -572,7 +587,7 @@ class CustomLoginView(LoginView):
     template_name = "insurance_app/login.html"
     redirect_authenticated_user = True
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         """
         Returns the URL to redirect to after a successful login.
 
@@ -581,7 +596,9 @@ class CustomLoginView(LoginView):
         """
         return reverse_lazy("welcome")
 
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(
+        self, request: HttpRequest, *args: Any, **kwargs: Any
+    ) -> HttpResponseBase:
         """
         Overrides dispatch method to redirect authenticated users to the profile page.
 
@@ -597,7 +614,7 @@ class CustomLoginView(LoginView):
             return redirect("profile")
         return super().dispatch(request, *args, **kwargs)
 
-    def form_valid(self, form):
+    def form_valid(self, form: AuthenticationForm) -> HttpResponse:
         """
         Handles session expiration based on the 'remember me' checkbox.
 
@@ -652,7 +669,9 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
     template_name = "insurance_app/profile.html"
     success_url = reverse_lazy("profile")
 
-    def get_object(self, queryset=None):
+    def get_object(
+        self, queryset=None
+    ) -> Union[AbstractBaseUser, AbstractUser, AnonymousUser]:
         """Retrieve the current logged-in user instance for editing.
 
         Overrides default UpdateView behavior to automatically use the
@@ -666,7 +685,7 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
         """
         return self.request.user
 
-    def form_valid(self, form):
+    def form_valid(self, form: Form) -> HttpResponse:
         """Handle valid form submission and provide user feedback.
 
         Args:
@@ -675,7 +694,7 @@ class UserProfileView(LoginRequiredMixin, UpdateView):
         Returns:
             HttpResponseRedirect: Redirect to success_url
         """
-        response = super().form_valid(form)
+        response = super().form_valid(form)  # This returns an HttpResponse
         messages.success(self.request, "Your profile has been updated!")
         return response
 
@@ -709,7 +728,7 @@ class ChangePasswordView(PasswordChangeView):
     template_name = "insurance_app/changepassword.html"
     success_url = reverse_lazy("profile")
 
-    def form_valid(self, form):
+    def form_valid(self, form: Form) -> HttpResponse:
         # Save the new password
         response = super().form_valid(form)
         # Add a success message
@@ -747,12 +766,12 @@ class UserLogoutView(LoginRequiredMixin, View):
     template_name = "insurance_app/logout_user.html"
     next_page = reverse_lazy("logout_user")
 
-    def get(self, request):
+    def get(self, request: HttpRequest) -> HttpResponse:
         # Handle GET requests with confirmation page
         user = self.request.user
         return render(request, self.template_name, {"user": user})
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> HttpResponse:
         # Handle actual logout
         user = self.request.user
         logout(request)
@@ -813,10 +832,10 @@ class PredictChargesView(LoginRequiredMixin, UpdateView):
     template_name = "insurance_app/predict.html"
     success_url = reverse_lazy("predict")
 
-    def get_object(self, queryset=None):
-        return self.request.user
+    def get_object(self, queryset=None) -> UserProfile:
+        return cast(UserProfile, self.request.user)
 
-    def form_valid(self, form):
+    def form_valid(self, form: Form) -> HttpResponse:
         user_profile = self.get_object()
 
         # Update and save user profile
@@ -829,13 +848,15 @@ class PredictChargesView(LoginRequiredMixin, UpdateView):
 
         # Validate inputs
         if user_profile.height <= 0:
-            return self.form_invalid(form, "Invalid height value")
+            messages.error(self.request, "Height must be a positive number.")
+            return self.form_invalid(form)
 
         # Calculate BMI using model property
         try:
             bmi = user_profile.bmi
         except ZeroDivisionError:
-            return self.form_invalid(form, "Invalid height value (cannot be zero)")
+            messages.error(self.request, "Invalid height value (cannot be zero)")
+            return self.form_invalid(form)
 
         # Create prediction data
         prediction_data = {
@@ -852,7 +873,8 @@ class PredictChargesView(LoginRequiredMixin, UpdateView):
         model = self.load_model()
 
         if not model:
-            return self.form_invalid(form, "Failed to load prediction model")
+            messages.error(self.request, "Failed to load prediction model.")
+            return self.form_invalid(form)
 
         predicted_charges = model.predict(preprocessed_data)
         prediction_value = round(predicted_charges[0], 2)
@@ -878,11 +900,12 @@ class PredictChargesView(LoginRequiredMixin, UpdateView):
             )
         )
 
-    def form_invalid(self, form, error_message):
-        messages.error(self.request, error_message)
+    def form_invalid(self, form: Form) -> HttpResponse:
+        """Handle invalid form submission."""
+        messages.error(self.request, "There was an error with your submission.")
         return super().form_invalid(form)
 
-    def categorize_bmi(self, bmi):
+    def categorize_bmi(self, bmi: float) -> str:
         if bmi < 18.5:
             return "under_weight"
         elif 18.5 <= bmi < 25:
@@ -902,7 +925,7 @@ class PredictChargesView(LoginRequiredMixin, UpdateView):
         else:
             return "late_adulthood"
 
-    def preprocess_data(self, data):
+    def preprocess_data(self, data: Dict[str, Any]) -> pd.DataFrame:
         # Define the expected columns (must match the model's input requirements)
         expected_columns = [
             "smoker",
@@ -943,7 +966,7 @@ class PredictChargesView(LoginRequiredMixin, UpdateView):
 
         return df
 
-    def load_model(self):
+    def load_model(self) -> Optional[Any]:
         try:
             model_path = os.path.join(
                 settings.BASE_DIR, "insurance_app/model/model.pkl"
@@ -1008,7 +1031,7 @@ class PredictionHistoryView(LoginRequiredMixin, ListView):
             .order_by("-timestamp")
         )
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context.update(
             {

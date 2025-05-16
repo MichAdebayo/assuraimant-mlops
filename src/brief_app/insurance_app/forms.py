@@ -5,6 +5,7 @@ from django.utils.html import format_html
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.hashers import make_password
 from django.forms import DateInput
+from typing import Optional
 
 
 class PredictChargesForm(forms.ModelForm):
@@ -112,7 +113,7 @@ class UserSignupForm(forms.ModelForm):
         model = UserProfile
         fields = ["username", "email", "password"]  # Fields displayed in the form
 
-    def save(self, commit=True):
+    def save(self, commit: bool = True) -> UserProfile:
         user = super().save(
             commit=False
         )  # Create a user object without saving it to the database yet
@@ -138,10 +139,10 @@ class UserLoginForm(forms.Form):
                   hidden field for security.
     """
 
-    username = forms.CharField(
+    username: forms.CharField = forms.CharField(
         max_length=150, label="Username"
     )  # Field for the username
-    password = forms.CharField(
+    password: forms.CharField = forms.CharField(
         widget=forms.PasswordInput, label="Password"
     )  # Password field with hidden input
 
@@ -165,10 +166,12 @@ class ApplicationForm(forms.ModelForm):
         model = JobApplication  # This will be the model for storing application data
         fields = ["name", "email", "resume", "cover_letter"]
 
-    name = forms.CharField(max_length=255, required=True)
-    email = forms.EmailField(required=True)
-    resume = forms.FileField(required=False)
-    cover_letter = forms.CharField(widget=forms.Textarea, required=True)
+    name: forms.CharField = forms.CharField(max_length=255, required=True)
+    email: forms.EmailField = forms.EmailField(required=True)
+    resume: forms.FileField = forms.FileField(required=False)
+    cover_letter: forms.CharField = forms.CharField(
+        widget=forms.Textarea, required=True
+    )
 
 
 class ChangePasswordForm(PasswordChangeForm):
@@ -244,7 +247,7 @@ class AppointmentForm(forms.ModelForm):
             ),
         }
 
-    def clean_time(self):
+    def clean_time(self) -> str:
         """Validates the time field to ensure it follows the HH:MM format.
 
         Checks if the time entered is not empty and adheres to a valid 24-hour
@@ -256,7 +259,7 @@ class AppointmentForm(forms.ModelForm):
         Raises:
             forms.ValidationError: If the time format is invalid.
         """
-        time = self.cleaned_data.get("time")
+        time: Optional[str] = self.cleaned_data.get("time")
         try:
             if not time:
                 raise forms.ValidationError("This field is required.")
