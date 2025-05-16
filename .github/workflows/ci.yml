@@ -164,7 +164,7 @@ jobs:
           echo "SECRET_KEY=${{ secrets.SECRET_KEY }}"
           echo "REPO_LC=$REPO_LC"
           echo "IMAGE_TAG=${{ github.sha }}"
-          echo "RENDER_API_TOKEN=${{ secrets.RENDER_API_TOKEN }}
+          echo "RENDER_API_TOKEN=${{ secrets.RENDER_API_TOKEN }}"
 
       - name: Push Docker image to GitHub Container Registry
         run: |
