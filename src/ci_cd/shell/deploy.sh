@@ -35,7 +35,16 @@ if [[ -z "$SERVICE_ID" ]]; then
 fi
 
 # Prepare JSON payload
-DEPLOY_PAYLOAD=$(jq -n --arg image "$IMAGE" '{ image: $image }')
+# DEPLOY_PAYLOAD=$(jq -n --arg image "$IMAGE" '{ image: $image }')
+
+# Prepare JSON payload with explicit version
+DEPLOY_PAYLOAD=$(jq -n \
+  --arg image "ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}" \
+  '{
+    dockerCommand: null,
+    imageUrl: $image,
+    isDockerCompose: false
+  }')
 
 echo "🧾 Generated JSON Payload:"
 echo "$DEPLOY_PAYLOAD" | jq .
