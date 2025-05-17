@@ -47,9 +47,9 @@ fi
 #   }')
 
 DEPLOY_PAYLOAD=$(jq -n \
-  --arg image "$IMAGE" \
+  --arg image "ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}" \
   '{
-    image: $image
+    imageUrl: $image
     isDockerCompose: true
   }')
 
