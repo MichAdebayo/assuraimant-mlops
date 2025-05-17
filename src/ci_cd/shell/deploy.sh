@@ -27,7 +27,7 @@ echo "Deploying image: $IMAGE"
 docker inspect "$IMAGE" --format='Image ID: {{.Id}}'
 
 # Replace with your actual Render service ID
-SERVICE_ID="srv-d0k548ffte5s738c46h0"
+SERVICE_ID="srv-d0k6j0d6ubrc73b0uh0g"
 
 if [[ -z "$SERVICE_ID" ]]; then
   echo "❌ SERVICE_ID is not set."
