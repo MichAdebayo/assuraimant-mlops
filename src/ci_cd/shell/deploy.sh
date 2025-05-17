@@ -63,11 +63,10 @@ RESPONSE_BODY=$(echo "$RESPONSE" | sed '$d')
 if [[ "$HTTP_STATUS" != "200" && "$HTTP_STATUS" != "201" && "$HTTP_STATUS" != "202" ]]; then
   echo "❌ Deployment failed with status code $HTTP_STATUS"
   echo "📦 Response: $RESPONSE_BODY"
-else
-  echo "✅ Deployment to Render completed successfully!"
   exit 1
 fi
 
+  echo "✅ Deployment to Render completed successfully!"
 
 
 
