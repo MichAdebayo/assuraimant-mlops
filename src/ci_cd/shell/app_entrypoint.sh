@@ -42,4 +42,4 @@ if ! python src/brief_app/manage.py collectstatic --noinput; then
 fi
 
 echo "🚀 Launching Gunicorn on port $GUNICORN_PORT..."
-exec gunicorn brief_app.wsgi:application --bind 0.0.0.0:$GUNICORN_PORT --access-logfile -
+exec gunicorn brief_app.wsgi:application --chdir src/brief_app --bind 0.0.0.0:$GUNICORN_PORT --access-logfile -
