@@ -1,8 +1,9 @@
 #!/bin/bash
+
 set -eo pipefail
 
 GUNICORN_PORT=${GUNICORN_PORT:-8000}
-MAX_RETRIES=20
+MAX_RETRIES=120
 RETRY_INTERVAL=3
 
 echo "🚀 Starting Assuraimant Web App"
