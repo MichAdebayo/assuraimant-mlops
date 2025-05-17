@@ -1,212 +1,194 @@
-# Assur'Aimant: - Insurance Premium Prediction Web App
+# Assur'Aimant: CI/CD & MLOps for a Data AI Project 🚀
 
-[![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
-[![Django](https://img.shields.io/badge/Django-4.2-brightgreen)](https://www.djangoproject.com/)
-[![License](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/licenses/MIT)
+[![Build Status](https://github.com/MichAdebayo/brief_django_application/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/MichAdebayo/brief_django_application/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)](https://www.python.org/) [![Django](https://img.shields.io/badge/Django-4.2-brightgreen?logo=django)](https://www.djangoproject.com/) [![License: MIT](https://img.shields.io/badge/License-MIT-green?logo=opensourceinitiative)](https://opensource.org/licenses/MIT)
 
-A professional Django application for predicting insurance premiums using machine learning, featuring user authentication, profile management, and interactive prediction capabilities.
+---
 
-Here is a snip of the general home page:
+![App Screenshot](src/brief_app/insurance_app/static/images/ci-cd-screenshot.png)
 
-![App Screenshot](brief_app/insurance_app/static/images/web-screenshot-1.png)
+> **Assur'Aimant** is a professional Django application for insurance premium prediction. This project builds on the initial application built, integrating a complete CI/CD pipeline and MLOps best practices to ensure quality, reproducibility, and continuous deployment of ML/AI models.
 
-Here is a snip of the client home page:
+---
 
-![App Screenshot](brief_app/insurance_app/static/images/web-screenshot-2.png)
+## 🖼️ Application Preview
 
+![App Screenshot](src/brief_app/insurance_app/static/images/web-screenshot-1.png)
 
-## Table of Contents
+---
+
+## 📋 Table of Contents
+- [Context & Objectives](#context--objectives)
 - [Features](#features)
-- [Installation](#installation)
-- [Directory Structure](#directory-structure)
-- [Database Schema](#database-schema)
-- [Configuration](#configuration)
-- [Main Features](#main-features)
+- [CI/CD & MLOps Strategy](#cicd--mlops-strategy)
+- [Installation & Launch](#installation--launch)
+- [Project Structure](#project-structure)
+- [Security & Quality](#security--quality)
 - [Contributing](#contributing)
+- [Authors](#authors)
 - [License](#license)
 
-## Features 🚀
+---
 
-**Core Functionality:**
-- User authentication with secure password hashing
-- Profile management system
-- Insurance premium prediction using lasso regression
-- Responsive UI with Tailwind CSS
-- SQLite database integration
-- Dynamic notifications and form validation
+## 🎯 Context & Objectives
 
-**Bonus Features:**
-- Prediction history tracking
-- Advisor appointment system
-- Interactive prediction preview
-- Mobile-responsive design
+As a Data AI Developer, this project aims to:
+- Automate integration, validation, and deployment of AI models (CI/CD, MLOps)
+- Ensure quality through automated tests covering the entire model lifecycle
+- Deploy the model reliably and reproducibly
 
-## Installation ⚙️
+---
+
+## 🚀 Features
+
+- 🔒 Secure authentication & profile management
+- 🤖 Insurance premium prediction
+- 🧪 Automated tests on data, pipelines, training, evaluation
+- 🛠️ CI pipeline (linting, tests, Docker build)
+- 🚢 Continuous delivery (CD) with Docker & automated deployment (on Render)
+- 📱 Responsive UI (Tailwind CSS)
+- 🗃️ Prediction history & appointment management
+
+---
+
+## 🔄 CI/CD & MLOps Strategy
+
+### 1. **Automated Tests**
+- Data validation (columns, types, missing values/outliers)
+- Data preparation tests (cleaning, scikit-learn pipelines)
+- Training tests (convergence, hyperparameters, performance thresholds)
+- Evaluation tests (metrics, bias checks)
+- Tools: `pytest`, `pytest-cov`, `pytest-mock`, `flake8`, `black`, `mypy`
+
+### 2. **CI Pipeline**
+- Linting, formatting, type checking
+- Running unit & integration tests
+- Automated Docker build
+- CI status badge in the README
+- Workflows: `.github/workflows/ci.yml`
+
+### 3. **Continuous Delivery**
+- Model packaging via Docker (`Dockerfile`)
+- Versioning by tag or commit SHA
+- Publishing to registry (Docker Hub, GitHub Container Registry)
+- Automatic deployment to staging, production on tag/approval (Render)
+- Monitoring & rollback
+
+
+---
+
+## ⚙️ Installation & Launch
 
 ### Prerequisites
 - Python 3.9+
 - pip
 - Node.js (for Tailwind CSS)
+- Docker
 
-### Setup
+### Quick Setup
 ```bash
-# Clone repository
+# Clone the repo
 git clone https://github.com/MichAdebayo/brief_django_application.git
 cd brief_django_application
 
-# Create virtual environment
+# Virtual environment
 python -m venv venv
 source venv/bin/activate  # Linux/MacOS
-venv\Scripts\activate  # Windows
+venv\Scripts\activate   # Windows
 
-# Install dependencies
+# Python dependencies
 pip install -r requirements.txt
 
-# Set up Tailwind CSS
+# Frontend dependencies (for Tailwind)
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 
-# Run migrations
-python manage.py migrate
+# Migrations & admin
+python src/brief_app/manage.py makemigrations
+python src/brief_app/manage.py migrate
+python src/brief_app/manage.py createsuperuser
 
-# Create admin user
-python manage.py createsuperuser
-
-# Run development server
-python manage.py runserver
-
-```
-## Directory Structure 📂
-
-```markdown
-.
-├── brief_app
-│   ├── __init__.py
-│   ├── asgi.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── insurance_app
-│   ├── model
-│   │   ├── model.pkl
-│   │   └── model_1.pickle
-│   ├── static
-│   │   ├── css
-│   │   ├── flatpickr
-│   │   ├── images
-│   │   └── js
-│   ├── templates
-│   │   └── insurance_app
-│   ├── templatetags
-│   │   ├── __init__.py
-│   │   └── custom_filters.py
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── forms.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   └── views.py
-├── node_modules
-│   ├── @alloc
-│   ├── @isaacs
-│   ├── @jridgewell
-│   ├── @nodelib
-│   ├── @pkgjs
-│   ├── @tailwindcss
-│   ├── autoprefixer
-│   │   ├── bin
-│   │   └── lib
-│   ├── caniuse-lite
-│   │   └── dist
-│   ├── nanoid
-│   │   └── bin
-│   ├── postcss
-│   │   └── lib
-│   ├── postcss-value-parser
-│   │   └── lib
-│   └── source-map-js
-│       └── lib
-├── resumes
-│   └── test.pdf
-├── templates
-│   └── base.html
-├── theme
-│   ├── static_src
-│   │   ├── src
-│   │   ├── package-lock.json
-│   │   ├── postcss.config.js
-│   │   └── tailwind.config.js
-│   ├── __init__.py
-│   └── apps.py
-├── manage.py
-├── package-lock.json
-├── package.json
-├── requirements.txt
-├── test.py
-└── test_numpy.py
+# Start the server
+python src/brief_app/manage.py runserver
 ```
 
-## Database Schema 🗄️
-
-
-## Main Features 🔍
-
-#### Prediction Flow
-
-- User logs in
-
-- Navigates to the prediction page
-
-- Form pre-filled with profile data
-
-- Interactive preview updates in real-time
-
-- Submit to get final prediction
-
-- Results saved to history (bonus), which can be viewed in the user's home page through the "view estimate history" link
-
-#### Security Measures
-
-- Password hashing with PBKDF2
-
-- CSRF protection
-
-- Input validation
-
-- Session-based authentication
-
-
-## Contributing 🤝
-
-Create feature branch:
-
-
-1. Copy
-
+### Run tests & local CI
 ```bash
-git checkout -b feature/your-feature
+flake8 src/
+black --check src/
+mypy src/
+pytest --maxfail=1 --disable-warnings -v
 ```
 
-
-2. Commit changes
-
-``` bash
-git commit -m "Add your feature"
+### Build & run Docker
+```bash
+docker build -t assur-aimant:latest .
+docker run -p 8000:8000 assur-aimant:latest
 ```
 
-3. Push to branch:
+---
 
-``` bash
-git push origin feature/your-feature
+## 🗂️ Project Structure
+
+```
+brief_django_application/
+├── src/
+│   ├── brief_app/
+│   │   ├── manage.py
+│   │   ├── brief_app/
+│   │   │   ├── settings.py
+│   │   │   ├── urls.py
+│   │   │   └── ...
+│   │   ├── insurance_app/
+│   │   │   ├── model/
+│   │   │   ├── static/images/web-screenshot-1.png
+│   │   │   ├── templates/
+│   │   │   ├── forms.py, models.py, views.py, ...
+│   │   ├── theme/
+│   │   └── ...
+├── tests/
+├── Dockerfile
+├── requirements.txt
+├── .github/workflows/ci.yml
+├── README.md
+└── ...
 ```
 
-4. Open Pull Request (PR)
+---
 
-## License 📄
+## 🛡️ Security & Quality
+- Password hashing (PBKDF2)
+- CSRF protection
+- Input validation
+- Automated linting, formatting, type checking
+- Automated tests for the entire model lifecycle
 
-This project is licensed under the MIT License.
+---
 
-## Project Team:
-[Michael Adebayo](https://github.com/MichAdebayo/) | [Eliandy Rymer](https://github.com/EliandyDumortier/) | [Dorothée Catry](https://github.com/DoroChan/)
+## 🤝 Contributing
+
+1. Create a branch:
+   ```bash
+   git checkout -b feature/my-feature
+   ```
+2. Commit:
+   ```bash
+   git commit -m "Add my feature"
+   ```
+3. Push:
+   ```bash
+   git push origin feature/my-feature
+   ```
+4. Open a Pull Request
+
+---
+
+## 👨‍💻 Authors
+- [Michael Adebayo](https://github.com/MichAdebayo/)
+- [Eliandy Rymer](https://github.com/EliandyDumortier/)
+
+---
+
+## 📄 License
+
+Project under MIT License.

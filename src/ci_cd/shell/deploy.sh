@@ -34,9 +34,6 @@ if [[ -z "$SERVICE_ID" ]]; then
   exit 1
 fi
 
-# Prepare JSON payload
-# DEPLOY_PAYLOAD=$(jq -n --arg image "$IMAGE" '{ image: $image }')
-
 # Prepare JSON payload with explicit version
 DEPLOY_PAYLOAD=$(jq -n \
   --arg image "ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}" \
@@ -46,13 +43,6 @@ DEPLOY_PAYLOAD=$(jq -n \
     isDockerCompose: false
   }')
 
-# DEPLOY_PAYLOAD=$(jq -n \
-#   --arg image "ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}" \
-#   '{
-#     imageUrl: $image,
-#     isDockerCompose: false
-#   }')
-
 echo "🧾 Generated JSON Payload:"
 echo "$DEPLOY_PAYLOAD" | jq .
 
@@ -61,8 +51,6 @@ RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.render.com/v1/services/${SER
   -H "Authorization: Bearer $RENDER_API_TOKEN" \
   -H "Content-Type: application/json" \
   --data "$DEPLOY_PAYLOAD" 2>&1)
-  # --data "$DEPLOY_PAYLOAD")
-  # --data-binary "$DEPLOY_PAYLOAD" 2>&1)
 
 # Parse response and HTTP status
 HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
@@ -75,64 +63,3 @@ if [[ "$HTTP_STATUS" != "200" && "$HTTP_STATUS" != "201" && "$HTTP_STATUS" != "2
 fi
 
   echo "✅ Deployment to Render completed successfully!"
-
-
-
-# #!/bin/bash
-
-# # Exit immediately if a command exits with a non-zero status
-# set -e
-
-# # Log in to GitHub Container Registry
-# echo "Logging into GitHub Container Registry..."
-# echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
-
-# # Debug Render API Token
-# echo "RENDER_API_TOKEN is ${RENDER_API_TOKEN:0:4}***"
-
-# # Validate required environment variables
-# if [[ -z "$REPO_LC" || -z "$IMAGE_TAG" || -z "$RENDER_API_TOKEN" ]]; then
-#   echo "❌ One or more required environment variables are not set. Exiting..."
-#   exit 1
-# fi
-
-# # Pull the Docker image from GHCR
-# echo "Pulling Docker image from GitHub Container Registry..."
-# docker pull ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}
-
-# # Deploy to Render
-# echo "Deploying Docker image to Render..."
-
-# # Enter service ID from the Render dashboard
-# SERVICE_ID="srv-d0jgfjemcj7s73801ik0"
-
-# # Verify service ID is accessible
-# echo "SERVICE_ID = $SERVICE_ID"
-
-# DEPLOY_PAYLOAD=$(jq -n \
-#   --arg image "ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}" \
-#   '{
-#     image: $image
-#   }')
-
-# echo "Generated JSON Payload:"
-# echo "$DEPLOY_PAYLOAD" | jq .
-
-# RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
-#   -H "Authorization: Bearer $RENDER_API_TOKEN" \
-#   -H "Content-Type: application/json" \
-#   --data-binary "$DEPLOY_PAYLOAD")
-
-# # Split response and status code
-# HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
-# RESPONSE_BODY=$(echo "$RESPONSE" | head -n -1)
-
-# echo "Deploying image: ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}"
-
-# if [[ "$HTTP_STATUS" != "200" && "$HTTP_STATUS" != "201" ]]; then
-#   echo "❌ Deployment failed with status code $HTTP_STATUS"
-#   echo "Response: $RESPONSE_BODY"
-#   exit 1
-# fi
-
-# echo "✅ Deployment to Render completed successfully!"

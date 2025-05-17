@@ -5,7 +5,7 @@ set -e
 IMAGE_TAG="$1"
 REPO="ghcr.io/michadebayo/assuraimant-web-app"
 
-# Optionally pass in a different repo/tag via ENV vars if needed
+# Track SHA and Build Time
 COMMIT_SHA=${GITHUB_SHA:-$IMAGE_TAG}
 BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
