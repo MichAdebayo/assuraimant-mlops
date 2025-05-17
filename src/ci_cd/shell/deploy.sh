@@ -50,7 +50,7 @@ DEPLOY_PAYLOAD=$(jq -n \
   --arg image "ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}" \
   '{
     imageUrl: $image,
-    isDockerCompose: true
+    isDockerCompose: false
   }')
 
 echo "🧾 Generated JSON Payload:"
