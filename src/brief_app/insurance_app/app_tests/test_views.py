@@ -106,7 +106,7 @@ class FunctionBasedViewsTest(TestCase):
         Ensures the contact view renders the form for anonymous users,
         creates a ContactMessage on POST, and allows staff to view the messages list.
         """
-        # anonymous GET renders form
+        # Anonymous GET renders form
         resp = self.client.get(reverse("contact"))
         self.assertEqual(resp.status_code, 200)
 
@@ -117,9 +117,15 @@ class FunctionBasedViewsTest(TestCase):
         self.assertEqual(resp.status_code, 302)
         self.assertTrue(ContactMessage.objects.exists())
 
-        # staff member can view messages list
-        # staff = User.objects.create_user("staff", "s@s.com", "pass", is_staff=True)
-        self.client.login(username="staff", password="pass")
+        # Create a staff user
+        staff = User.objects.create_user(
+            username="staff", email="s@s.com", password="pass", is_staff=True
+        )
+
+        # Log in as the staff user
+        self.client.login(staff)
+
+        # Staff member can view messages list
         resp = self.client.get(reverse("messages_list"))
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, "insurance_app/messages_list.html")
@@ -141,18 +147,16 @@ class FunctionBasedViewsTest(TestCase):
         Ensures the view returns the correct JSON response based on the provided date
         and available time slots.
         """
-        # no date provided
+        # No date provided
         resp = self.client.get(reverse("get_available_times"))
         self.assertJSONEqual(resp.content, {"times": []})
 
-        # with a date but no availability
+        # With a date but no availability
         resp = self.client.get(reverse("get_available_times") + "?date=2099-01-01")
         self.assertJSONEqual(resp.content, {"times": []})
 
-        # with an availability
-        # av = Availability.objects.create(
-        #     date="2050-12-31", time_slots=["09:00", "10:00"]
-        # )
+        # With an availability
+        Availability.objects.create(date="2050-12-31", time_slots=["09:00", "10:00"])
         resp = self.client.get(reverse("get_available_times") + "?date=2050-12-31")
         self.assertJSONEqual(resp.content, {"times": ["09:00", "10:00"]})
 
