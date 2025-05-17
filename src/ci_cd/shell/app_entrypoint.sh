@@ -19,7 +19,7 @@ echo "DATABASE_URL is: $DATABASE_URL"
 echo ""
 echo "⏳ Waiting for database to be ready..."
 COUNT=0
-until python manage.py showmigrations &>/dev/null; do
+until python src/brief_app/manage.py showmigrations &>/dev/null; do
   COUNT=$((COUNT + 1))
   if [ "$COUNT" -ge "$MAX_RETRIES" ]; then
     echo "⛔️ Database not ready after $MAX_RETRIES attempts, exiting..."
@@ -30,13 +30,13 @@ until python manage.py showmigrations &>/dev/null; do
 done
 
 echo "✅ Database is ready. Running migrations..."
-if ! python manage.py migrate; then
+if ! python src/brief_app/manage.py migrate; then
   echo "❌ Database migrations failed"
   exit 1
 fi
 
 echo "📦 Collecting static files..."
-if ! python manage.py collectstatic --noinput; then
+if ! python src/brief_app/manage.py collectstatic --noinput; then
   echo "❌ Collectstatic failed"
   exit 1
 fi
