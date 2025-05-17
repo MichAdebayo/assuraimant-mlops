@@ -14,6 +14,8 @@ else
   echo "⚠️ version.txt not found"
 fi
 
+echo "DATABASE_URL is: $DATABASE_URL"
+
 echo ""
 echo "⏳ Waiting for database to be ready..."
 COUNT=0

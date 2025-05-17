@@ -97,6 +97,8 @@ DATABASES = {
     )
 }
 
+print("DATABASE_URL:", os.getenv("DATABASE_URL"))
+
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.sqlite3",

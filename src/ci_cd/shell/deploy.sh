@@ -37,13 +37,19 @@ fi
 # Prepare JSON payload
 # DEPLOY_PAYLOAD=$(jq -n --arg image "$IMAGE" '{ image: $image }')
 
-# Prepare JSON payload with explicit version
+# # Prepare JSON payload with explicit version
+# DEPLOY_PAYLOAD=$(jq -n \
+#   --arg image "ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}" \
+#   '{
+#     dockerCommand: null,
+#     imageUrl: $image,
+#     isDockerCompose: false
+#   }')
+
 DEPLOY_PAYLOAD=$(jq -n \
   --arg image "ghcr.io/${REPO_LC}/assuraimant-web-app:${IMAGE_TAG}" \
   '{
-    dockerCommand: null,
-    imageUrl: $image,
-    isDockerCompose: false
+    image: $image
   }')
 
 echo "🧾 Generated JSON Payload:"
@@ -53,8 +59,8 @@ echo "$DEPLOY_PAYLOAD" | jq .
 RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
   -H "Authorization: Bearer $RENDER_API_TOKEN" \
   -H "Content-Type: application/json" \
-  --data "$DEPLOY_PAYLOAD")
-  # --data-binary "$DEPLOY_PAYLOAD" 2>&1)
+  # --data "$DEPLOY_PAYLOAD")
+  --data-binary "$DEPLOY_PAYLOAD" 2>&1)
 
 # Parse response and HTTP status
 HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
