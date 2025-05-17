@@ -7,6 +7,10 @@ on:
         required: true
       IMAGE_TAG:
         required: true
+      DATABASE_URL:
+        required: true
+      SECRET_KEY:
+        required: true
 
 jobs:
   deploy:
@@ -30,6 +34,8 @@ jobs:
           RENDER_API_TOKEN: ${{ secrets.RENDER_API_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           chmod +x ./src/ci_cd/shell/deploy.sh
           ./src/ci_cd/shell/deploy.sh

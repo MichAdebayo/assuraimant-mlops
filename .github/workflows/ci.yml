@@ -119,6 +119,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       
+      - name: Cache Docker Compose
+        uses: actions/cache@v3
+        with:
+          path: /usr/local/bin/docker-compose
+          key: ${{ runner.os }}-docker-compose
+          restore-keys: |
+            ${{ runner.os }}-docker-compose
+
+      - name: Install Docker Compose (if not cached)
+        run: |
+          if ! [ -x "$(command -v docker-compose)" ]; then
+            echo "Docker Compose not found. Installing..."
+            sudo apt-get update
+            sudo apt-get install -y docker-compose
+          else
+            echo "Docker Compose is already cached."
+          fi
+
       - name: Set lowercase repository name
         run: |
           echo "REPO_LC=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
@@ -150,4 +168,6 @@ jobs:
     secrets: 
       RENDER_API_TOKEN: ${{ secrets.RENDER_API_TOKEN }}
       IMAGE_TAG: ${{ github.sha }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
       

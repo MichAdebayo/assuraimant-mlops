@@ -13,10 +13,8 @@ echo "🛠 Building Docker image: $REPO:$IMAGE_TAG"
 echo "🔢 Commit SHA: $COMMIT_SHA"
 echo "⏰ Build Time: $BUILD_TIME"
 
-docker build \
+docker-compose build \
   --build-arg COMMIT_SHA="$COMMIT_SHA" \
-  --build-arg BUILD_TIME="$BUILD_TIME" \
-  -t "$REPO:$IMAGE_TAG" \
-  .
+  --build-arg BUILD_TIME="$BUILD_TIME"
 
 echo "✅ Docker image built: $REPO:$IMAGE_TAG"
