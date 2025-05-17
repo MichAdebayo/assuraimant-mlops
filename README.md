@@ -1,6 +1,5 @@
 # Assur'Aimant: CI/CD & MLOps for a Data AI Project 🚀
 
-[![Build Status](https://github.com/MichAdebayo/brief_django_application/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/MichAdebayo/brief_django_application/actions/workflows/ci.yml)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue?logo=python)](https://www.python.org/) [![Django](https://img.shields.io/badge/Django-4.2-brightgreen?logo=django)](https://www.djangoproject.com/) [![License: MIT](https://img.shields.io/badge/License-MIT-green?logo=opensourceinitiative)](https://opensource.org/licenses/MIT)
 
 ---
