@@ -50,10 +50,11 @@ echo "🧾 Generated JSON Payload:"
 echo "$DEPLOY_PAYLOAD" | jq .
 
 # Send deploy request to Render
-RESPONSE=$(curl -v -s -w "\n%{http_code}" "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
+RESPONSE=$(curl -s -w "\n%{http_code}" "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
   -H "Authorization: Bearer $RENDER_API_TOKEN" \
   -H "Content-Type: application/json" \
-  --data-binary "$DEPLOY_PAYLOAD" 2>&1)
+  --data "$DEPLOY_PAYLOAD")
+  # --data-binary "$DEPLOY_PAYLOAD" 2>&1)
 
 # Parse response and HTTP status
 HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
@@ -62,10 +63,12 @@ RESPONSE_BODY=$(echo "$RESPONSE" | sed '$d')
 if [[ "$HTTP_STATUS" != "200" && "$HTTP_STATUS" != "201" && "$HTTP_STATUS" != "202" ]]; then
   echo "❌ Deployment failed with status code $HTTP_STATUS"
   echo "📦 Response: $RESPONSE_BODY"
+else
+  echo "✅ Deployment to Render completed successfully!"
   exit 1
 fi
 
-echo "✅ Deployment to Render completed successfully!"
+
 
 
 # #!/bin/bash
